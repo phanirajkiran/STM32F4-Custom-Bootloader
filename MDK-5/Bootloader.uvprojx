@@ -403,6 +403,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Driver/HAL</GroupName>
+          <Files>
+            <File>
+              <FileName>HAL_GPIO_Driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drivers\HAL\Include\HAL_GPIO_Driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_Common.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drivers\HAL\Include\HAL_Common.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>

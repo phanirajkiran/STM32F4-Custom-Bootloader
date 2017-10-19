@@ -1,5 +1,5 @@
 Dependencies for Project 'Bootloader', Target 'Target 1': (DO NOT MODIFY !)
-F (..\src\Bootloader.c)(0x59E8DE83)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\bootloader.o --omf_browse .\bootloader.crf --depend .\bootloader.d)
+F (..\src\Bootloader.c)(0x59E8DEAB)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\bootloader.o --omf_browse .\bootloader.crf --depend .\bootloader.d)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59E765B1)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f411xe.h)(0x59E765B1)
 I (..\CMSIS\Include\core_cm4.h)(0x59E765C0)
@@ -20,3 +20,5 @@ I (..\CMSIS\Include\cmsis_armcc.h)(0x59E765C0)
 I (..\CMSIS\Include\core_cmFunc.h)(0x59E765C0)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E765C0)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E765B1)
+F (..\Drivers\HAL\Include\HAL_GPIO_Driver.h)(0x59E8FA31)()
+F (..\Drivers\HAL\Include\HAL_Common.h)(0x59E8F59E)()
