@@ -10,3 +10,5 @@
 .\bootloader.o: ..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\bootloader.o: ..\Drivers\HAL\Include\HAL_GPIO_Driver.h
 .\bootloader.o: ..\Drivers\HAL\Include\HAL_Common.h
+.\bootloader.o: ..\Drivers\HAL\Include\HAL_RCC_Driver.h
+.\bootloader.o: ..\Drivers\HAL\Include\HAL_CRC_Driver.h

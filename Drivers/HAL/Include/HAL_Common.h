@@ -10,8 +10,10 @@ extern "C" {
 /*****************************************************************************/
 /*****************************************************************************/
 #define HAL_OK      1U
-#define HAL_FAIL    0U
+#define HAL_FAIL    !HAL_FAIL
 
+#define HAL_BUSY    0U
+#define HAL_READY   !HAL_BUSY
 #ifdef __cplusplus
 }
 #endif

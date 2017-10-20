@@ -1,5 +1,5 @@
 Dependencies for Project 'Bootloader', Target 'Target 1': (DO NOT MODIFY !)
-F (..\src\Bootloader.c)(0x59E93E20)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\bootloader.o --omf_browse .\bootloader.crf --depend .\bootloader.d)
+F (..\src\Bootloader.c)(0x59E95774)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\bootloader.o --omf_browse .\bootloader.crf --depend .\bootloader.d)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f411xe.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cm4.h)(0x59E90F58)
@@ -10,7 +10,9 @@ I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
 I (..\Drivers\HAL\Include\HAL_GPIO_Driver.h)(0x59E93D7A)
-I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E90F58)
+I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)
+I (..\Drivers\HAL\Include\HAL_RCC_Driver.h)(0x59E94331)
+I (..\Drivers\HAL\Include\HAL_CRC_Driver.h)(0x59E95A52)
 F (.\startup_stm32f411xe.s)(0x59E90F58)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include--pd "__UVISION_VERSION SETA 524" --pd "_RTE_ SETA 1" --pd "STM32F411xE SETA 1"--list .\startup_stm32f411xe.lst --xref -o .\startup_stm32f411xe.o --depend .\startup_stm32f411xe.d)
 F (.\system_stm32f4xx.c)(0x59E90F58)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\system_stm32f4xx.o --omf_browse .\system_stm32f4xx.crf --depend .\system_stm32f4xx.d)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59E90F58)
@@ -23,7 +25,7 @@ I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
 F (..\Drivers\HAL\Include\HAL_GPIO_Driver.h)(0x59E93D7A)()
-F (..\Drivers\HAL\Include\HAL_Common.h)(0x59E90F58)()
+F (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)()
 F (..\Drivers\HAL\Source\HAL_GPIO_Driver.c)(0x59E93E03)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\hal_gpio_driver.o --omf_browse .\hal_gpio_driver.crf --depend .\hal_gpio_driver.d)
 I (..\Drivers\HAL\Include\HAL_GPIO_Driver.h)(0x59E93D7A)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59E90F58)
@@ -35,4 +37,18 @@ I (..\CMSIS\Include\cmsis_armcc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
-I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E90F58)
+I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)
+F (..\Drivers\HAL\Include\HAL_RCC_Driver.h)(0x59E94331)()
+F (..\Drivers\HAL\Include\HAL_CRC_Driver.h)(0x59E95A52)()
+F (..\Drivers\HAL\Source\HAL_CRC_Driver.c)(0x59E95A7C)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\hal_crc_driver.o --omf_browse .\hal_crc_driver.crf --depend .\hal_crc_driver.d)
+I (..\Drivers\HAL\Include\HAL_CRC_Driver.h)(0x59E95A52)
+I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59E90F58)
+I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f411xe.h)(0x59E90F58)
+I (..\CMSIS\Include\core_cm4.h)(0x59E90F58)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588C2C04)
+I (..\CMSIS\Include\core_cmInstr.h)(0x59E90F58)
+I (..\CMSIS\Include\cmsis_armcc.h)(0x59E90F58)
+I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
+I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
+I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
+I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)

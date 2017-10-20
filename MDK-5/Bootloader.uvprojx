@@ -420,6 +420,21 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\HAL\Source\HAL_GPIO_Driver.c</FilePath>
             </File>
+            <File>
+              <FileName>HAL_RCC_Driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drivers\HAL\Include\HAL_RCC_Driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_CRC_Driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drivers\HAL\Include\HAL_CRC_Driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_CRC_Driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\HAL\Source\HAL_CRC_Driver.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
