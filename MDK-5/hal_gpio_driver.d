@@ -1,0 +1,12 @@
+.\hal_gpio_driver.o: ..\Drivers\HAL\Source\HAL_GPIO_Driver.c
+.\hal_gpio_driver.o: ..\Drivers\HAL\Include\HAL_GPIO_Driver.h
+.\hal_gpio_driver.o: ..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
+.\hal_gpio_driver.o: ..\CMSIS\Device\ST\STM32F4xx\Include\stm32f411xe.h
+.\hal_gpio_driver.o: ..\CMSIS\Include\core_cm4.h
+.\hal_gpio_driver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\hal_gpio_driver.o: ..\CMSIS\Include\core_cmInstr.h
+.\hal_gpio_driver.o: ..\CMSIS\Include\cmsis_armcc.h
+.\hal_gpio_driver.o: ..\CMSIS\Include\core_cmFunc.h
+.\hal_gpio_driver.o: ..\CMSIS\Include\core_cmSimd.h
+.\hal_gpio_driver.o: ..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
+.\hal_gpio_driver.o: ..\Drivers\HAL\Include\HAL_Common.h

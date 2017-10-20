@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\CMSIS\Device\ST\STM32F4xx\Include;..\CMSIS\Include</IncludePath>
+              <IncludePath>..\CMSIS\Device\ST\STM32F4xx\Include;..\CMSIS\Include;..\Drivers\HAL\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -414,6 +414,11 @@
               <FileName>HAL_Common.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Drivers\HAL\Include\HAL_Common.h</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_GPIO_Driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\HAL\Source\HAL_GPIO_Driver.c</FilePath>
             </File>
           </Files>
         </Group>

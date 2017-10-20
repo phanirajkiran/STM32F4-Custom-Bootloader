@@ -29,6 +29,16 @@ extern "C" {
 #define GPIO_PIN_15     ((uint16_t)0x8000)  /*!< Pin 15 selected   */
 #define GPIO_PIN_ALL    ((uint16_t)0xFFFF)  /*!< All pins selected */
     
+/*! 
+  * @brief GPIO Configuration Mode 
+  *        Elements values convention: 0xX0yz00YZ
+  *           - X  : GPIO mode or EXTI Mode
+  *           - y  : External IT or Event trigger detection 
+  *           - z  : IO configuration on External IT or Event
+  *           - Y  : Output type (Push Pull or Open Drain)
+  *           - Z  : IO Direction mode (Input, Output, Alternate or Analog)
+  * 
+  */ 
 #define GPIO_MODE_INPUT                 0x00000000U /*!< Input Floating      */
 #define GPIO_MODE_OUTPUT_PP             0x00000001U /*!< Output PushPull     */
 #define GPIO_MODE_OUTPUT_OD             0x00000011U /*!< Output Open Drain   */
@@ -65,14 +75,14 @@ rising & falling edge trigger detecting */
  *      
  *  Structure used to initialize the GPIO
  */
-typedef struct GPIO_InitTypeDef
+typedef struct
 {
     uint32_t Pin;        /*!< The pin to initialize                          */
     uint32_t Mode;       /*!< The mode to set the gpio pin to                */
     uint32_t Pull;       /*!< Whether the pin is pull-up/down or no pull     */
     uint32_t Speed;      /*!< Speed of the pin                               */
     uint32_t Alternate;  /*!< Specifies if the pin is in alternate function  */
-};
+} GPIO_InitTypeDef;
 
 /*****************************************************************************/
 /*                       Driver Exposed HAL                                  */
@@ -82,11 +92,10 @@ typedef struct GPIO_InitTypeDef
  *  Initializes the given GPIO using the GPIO_Init handle.
  *  
  *  \param  *GPIOx      The GPIO base port address.
- *  \param  gpio_handle The GPIO initialization structure handle
- *  \retval uint8_t     Returns 1 if successful. 0 if failed.
+ *  \param  *GPIO_Init  The GPIO initialization structure handle
  *    
  */
-uint8_t HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef gpio_handle);
+void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init);
 
 /*! \brief Reads from the specified GPIO pin
  *  
