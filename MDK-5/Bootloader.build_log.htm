@@ -28,20 +28,16 @@ Project File Date:  10/19/2017
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling Bootloader.c...
-..\src\Bootloader.c(14): warning:  #111-D: statement is unreachable
+..\src\Bootloader.c(39): warning:  #111-D: statement is unreachable
   	return 0;
-..\src\Bootloader.c(42): warning:  #940-D: missing return statement at end of non-void function "Check_BootFlag" 
-  }
-..\src\Bootloader.c(28): warning:  #177-D: variable "crc_check"  was declared but never referenced
-      uint32_t crc_check;
-..\src\Bootloader.c(24): warning:  #177-D: function "Check_BootFlag"  was declared but never referenced
-  static uint8_t Check_BootFlag(void)
-..\src\Bootloader.c: 4 warnings, 0 errors
-compiling HAL_CRC_Driver.c...
-compiling HAL_GPIO_Driver.c...
+..\src\Bootloader.c(13): warning:  #177-D: variable "crc"  was declared but never referenced
+      uint32_t crc;
+..\src\Bootloader.c(49): warning:  #177-D: function "Check_BootFlag"  was declared but never referenced
+  static uint32_t Check_BootFlag(void)
+..\src\Bootloader.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=436 RO-data=424 RW-data=0 ZI-data=1632  
-".\Bootloader.axf" - 0 Error(s), 4 Warning(s).
+Program Size: Code=604 RO-data=424 RW-data=0 ZI-data=1632  
+".\Bootloader.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -64,7 +60,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.2
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>
