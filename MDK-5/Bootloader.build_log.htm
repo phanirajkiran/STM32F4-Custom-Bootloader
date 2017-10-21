@@ -21,28 +21,27 @@ Target DLL:      Segger\JL2CM3.dll V2.99.26.0
 Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
-C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\MDK-5\Bootloader.uvprojx
-Project File Date:  10/20/2017
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\MDK-5\Bootloader.uvprojx
+Project File Date:  10/21/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Build Project 'Bootloader' - Target 'Nucleo-F411RE'
+Build target 'Nucleo-F411RE'
 compiling Bootloader.c...
-C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\src\Bootloader.c(26): warning:  #111-D: statement is unreachable
+..\src\Bootloader.c(51): warning:  #111-D: statement is unreachable
   	return 0;
-C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\src\Bootloader.c(40): warning:  #185-D: dynamic initialization in unreachable code
-      uint8_t boot_flag_data = *(uint8_t *)
-OOT_FLAG_ADDRESS; 
-C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\src\Bootloader.c(42): warning:  #177-D: variable "boot_flag_size"  was declared but never referenced
-      uint8_t boot_flag_size = BOOT_FLAG_SIZE;
-C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\src\Bootloader.c(43): warning:  #177-D: variable "crc_result"  was declared but never referenced
-      uint32_t crc_result;
-C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\src\Bootloader.c(77): warning:  #1-D: last line of file ends without a newline
-  }
-..\src\Bootloader.c: 5 warnings, 0 errors
+..\src\Bootloader.c(95): warning:  #177-D: function "Bootloader_Init"  was declared but never referenced
+  static void Bootloader_Init(void)
+..\src\Bootloader.c: 2 warnings, 0 errors
+compiling HAL_UART_Driver.c...
+..\Drivers\HAL\Source\HAL_UART_Driver.c(122): warning:  #177-D: function "HAL_UART_Disable"  was declared but never referenced
+  static inline void HAL_UART_Disable(UART_HandleTypeDef *handle)
+..\Drivers\HAL\Source\HAL_UART_Driver.c(132): warning:  #177-D: function "HAL_UART_Enable_TXE"  was declared but never referenced
+  static inline void HAL_UART_Enable_TXE(UART_HandleTypeDef *handle)
+..\Drivers\HAL\Source\HAL_UART_Driver.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=496 RO-data=424 RW-data=0 ZI-data=1632  
-".\Bootloader.axf" - 0 Error(s), 5 Warning(s).
+Program Size: Code=1542 RO-data=474 RW-data=4 ZI-data=1636  
+".\Bootloader.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -65,7 +64,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.2
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>

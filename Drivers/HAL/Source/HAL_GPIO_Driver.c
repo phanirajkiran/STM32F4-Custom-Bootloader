@@ -28,6 +28,7 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init)
     uint32_t position;
     uint32_t ioposition = 0x00U;
     uint32_t iocurrent = 0x00U;
+    uint32_t temp = 0x00U;
     
     for(position = 0U; position < GPIO_NUMBER; position++)
     {
@@ -42,7 +43,10 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init)
             if((GPIO_Init->Mode == GPIO_MODE_AF_PP) || 
                (GPIO_Init->Mode == GPIO_MODE_AF_OD)     )
             {
-                /* TODO: alternate function configuration */
+                temp = GPIOx->AFR[position >> 3U];
+                temp &= ~(0xFU << ((uint32_t)(position & 0x07U) * 4U)) ;
+                temp |= ((uint32_t)(GPIO_Init->Alternate) << (((uint32_t)position & 0x07U) * 4U));
+                GPIOx->AFR[position >> 3U] = temp;
             }
             /* Configure IO Mode*/
             GPIOx->MODER &= ~(GPIO_MODER_MODE0 << (2U * position));
