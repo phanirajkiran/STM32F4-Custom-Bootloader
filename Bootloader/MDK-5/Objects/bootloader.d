@@ -1,0 +1,15 @@
+.\objects\bootloader.o: ..\src\Bootloader.c
+.\objects\bootloader.o: ..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
+.\objects\bootloader.o: ..\CMSIS\Device\ST\STM32F4xx\Include\stm32f411xe.h
+.\objects\bootloader.o: ..\CMSIS\Include\core_cm4.h
+.\objects\bootloader.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\bootloader.o: ..\CMSIS\Include\core_cmInstr.h
+.\objects\bootloader.o: ..\CMSIS\Include\cmsis_armcc.h
+.\objects\bootloader.o: ..\CMSIS\Include\core_cmFunc.h
+.\objects\bootloader.o: ..\CMSIS\Include\core_cmSimd.h
+.\objects\bootloader.o: ..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
+.\objects\bootloader.o: ..\Drivers\HAL\Include\HAL_GPIO_Driver.h
+.\objects\bootloader.o: ..\Drivers\HAL\Include\HAL_Common.h
+.\objects\bootloader.o: ..\Drivers\HAL\Include\HAL_RCC_Driver.h
+.\objects\bootloader.o: ..\Drivers\HAL\Include\HAL_CRC_Driver.h
+.\objects\bootloader.o: ..\Drivers\HAL\Include\HAL_UART_Driver.h

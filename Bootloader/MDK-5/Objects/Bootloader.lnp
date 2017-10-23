@@ -1,0 +1,11 @@
+--cpu=Cortex-M4.fp
+".\objects\bootloader.o"
+".\objects\startup_stm32f411xe.o"
+".\objects\system_stm32f4xx.o"
+".\objects\hal_gpio_driver.o"
+".\objects\hal_crc_driver.o"
+".\objects\hal_uart_driver.o"
+".\objects\hal_rcc_driver.o"
+--ro-base 0x08000000 --entry 0x08000000 --rw-base 0x20000000 --entry Reset_Handler --first __Vectors --strict --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\Bootloader.map" -o .\Objects\Bootloader.axf
