@@ -7,6 +7,8 @@ using System;
 using System.Windows;
 using Microsoft.Win32;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CustomBootloaderFlash.ViewModels
 {
@@ -62,6 +64,12 @@ namespace CustomBootloaderFlash.ViewModels
         /// </summary>
         private long _progressbar_current = 0;
         #endregion
+
+        /// <summary>
+        /// Set to force the flash button to be disabled at all times. Clear to allow logic of
+        /// enable/disable to resume normal operation
+        /// </summary>
+        private bool _forceFlashButtonDisable;
         #endregion
 
         #region Public Fields
@@ -210,7 +218,7 @@ namespace CustomBootloaderFlash.ViewModels
             dispatchTimer.Tick += (sender, e) => 
             {
                 Flash_Command.RaiseCanExecuteChanged();
-                if ((ProgressBar_Current++) > ProgressBar_Maximum) ProgressBar_Current = 0;
+                ProgressBar_Current = _mainWindowModel.TotalBytesProcessed;
             };
             dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             dispatchTimer.Start();
@@ -226,12 +234,12 @@ namespace CustomBootloaderFlash.ViewModels
         {
             if (_mainWindowModel.Target_Connect(SelectedComPort, SelectedBaudRate))
             {
-                MessageBox.Show("Connection Successful!");
+                System.Diagnostics.Trace.TraceInformation("Connection Successful!");
                 _isTargetConnected = true;
             }
             else
             {
-                MessageBox.Show("Unable to connect to target");
+                System.Diagnostics.Trace.TraceInformation("Unable to connect to target");
                 _isTargetConnected = false;
             }
         }
@@ -282,7 +290,7 @@ namespace CustomBootloaderFlash.ViewModels
         {
             bool result = false;
 
-            if (string.IsNullOrEmpty(FilePath) || _isTargetConnected == false)
+            if (string.IsNullOrEmpty(FilePath) || _isTargetConnected == false || _forceFlashButtonDisable == true)
                 result = false;
             else
                 result = true;
@@ -293,9 +301,14 @@ namespace CustomBootloaderFlash.ViewModels
         /// <summary>
         /// Command to execute when the flash button is clicked
         /// </summary>
-        async private void Flash_CommandExecute()
+        private async void Flash_CommandExecute()
         {
-  
+            _forceFlashButtonDisable = true;
+            await Task.Run(() =>
+            {
+                _mainWindowModel.Target_FlashStart();
+            });
+            _forceFlashButtonDisable = false;
         }
         #endregion
 

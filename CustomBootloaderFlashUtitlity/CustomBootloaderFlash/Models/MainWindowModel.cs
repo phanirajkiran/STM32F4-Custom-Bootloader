@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Threading;
 
 namespace CustomBootloaderFlash.Models
 {
@@ -15,7 +16,8 @@ namespace CustomBootloaderFlash.Models
         #region Private members
         private SerialPort _serialport;
         private int[] _baudrates = { 115200 };
-
+        private bool _flashInProgess = false;
+        private List<int> _receivedData = new List<int>();
         #region Commands to Target
         /// <summary>
         /// The erase command
@@ -30,9 +32,11 @@ namespace CustomBootloaderFlash.Models
         {
             get { return _baudrates; }
         }
+
+        public long TotalBytesProcessed { get; set; } = 0;
         #endregion
 
-        #region Constructures
+        #region Constructurors
         public MainWindowModel()
         {
             _serialport = new SerialPort();
@@ -54,6 +58,12 @@ namespace CustomBootloaderFlash.Models
         {
             SerialPort sp = (SerialPort)sender;
             int receivedData = sp.ReadByte();
+
+            if (_receivedData.Count >= 2)
+                _receivedData.Clear();
+
+            _receivedData.Add(receivedData);
+            
         }
         /// <summary>
         /// Retrieves the available com ports in the system
@@ -84,13 +94,72 @@ namespace CustomBootloaderFlash.Models
         {
             byte checksum = 0xFF;
 
-            for(int i = 0; i < message.Length; i++)
+            for (int i = 0; i < message.Length; i++)
             {
                 checksum ^= message[i];
             }
 
             return checksum;
         }
+
+        private bool ValidateMessage(int[] msg)
+        {
+            int checksum = 0xFF;
+            for(int i = 0; i > msg.Length; i++)
+            {
+                checksum ^= msg[i];
+            }
+
+            if (checksum == 0x00)
+                return true;
+            else
+                return false;
+        }
+
+        #region Flashing States
+        /// <summary>
+        /// Attempts to hookup communication to the target
+        /// </summary>
+        /// <returns></returns>
+        private bool Flash_HookupState()
+        {
+            bool stateResult = false;
+            bool timedout = false;
+            bool _continue = true;
+            int[] receivedDataCopy = new int[2];
+            // TODO: Send Restart message
+
+            #region Timedout Timer
+            System.Timers.Timer timedoutTimer = new System.Timers.Timer(1000);
+            timedoutTimer.Elapsed += ((o, e) =>
+            {
+                timedout = true;
+                timedoutTimer.Enabled = false;
+                
+            });
+            #endregion
+
+            #region Waiting for ACK within timeout period
+
+
+            while (timedout == false && _continue == true)
+            {
+                if (_receivedData.Count == 2)
+                {
+                    _receivedData.CopyTo(receivedDataCopy);
+                    if (ValidateMessage(receivedDataCopy) == true)
+                    {
+                        timedoutTimer.Enabled = false;
+                        _continue = false;
+                        stateResult = true;
+                    }
+                }
+            }
+            #endregion
+
+            return stateResult;
+        }
+        #endregion
         #endregion
 
         #region Public Functions
@@ -104,14 +173,18 @@ namespace CustomBootloaderFlash.Models
         /// <returns>True if connection is succesfful, otherwise returns false</returns>
         public bool Target_Connect(string comport, int baudrate)
         {
-            _serialport.PortName = comport;
-            _serialport.BaudRate = baudrate;
-            _serialport.Parity = Parity.None;
-            _serialport.StopBits = StopBits.One;
-            _serialport.DataBits = 8;
-            _serialport.Handshake = Handshake.None;
-            _serialport.RtsEnable = false;
-            _serialport.DataReceived += new SerialDataReceivedEventHandler(Target_DataReceived);
+            if(!_serialport.IsOpen)
+            {
+                _serialport.PortName = comport;
+                _serialport.BaudRate = baudrate;
+                _serialport.Parity = Parity.None;
+                _serialport.StopBits = StopBits.One;
+                _serialport.DataBits = 8;
+                _serialport.Handshake = Handshake.None;
+                _serialport.RtsEnable = false;
+                _serialport.DataReceived += new SerialDataReceivedEventHandler(Target_DataReceived);
+            }
+            
             try
             {
                 _serialport.Open();
@@ -163,7 +236,8 @@ namespace CustomBootloaderFlash.Models
 
         public void Target_FlashStart()
         {
-
+            bool stateResult = false;
+            stateResult = Flash_HookupState();
         }
         #endregion
 
