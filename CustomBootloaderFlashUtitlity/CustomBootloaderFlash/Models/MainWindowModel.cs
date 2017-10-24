@@ -160,6 +160,11 @@ namespace CustomBootloaderFlash.Models
             
             _serialport.Write(msg, 0, msg.Length);
         }
+
+        public void Target_FlashStart()
+        {
+
+        }
         #endregion
 
 

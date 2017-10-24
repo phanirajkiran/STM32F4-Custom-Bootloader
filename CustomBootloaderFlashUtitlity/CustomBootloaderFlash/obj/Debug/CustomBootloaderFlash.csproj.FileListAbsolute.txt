@@ -27,3 +27,32 @@ c:\users\willi\documents\visual studio 2017\Projects\CustomBootloaderFlash\Custo
 c:\users\willi\documents\visual studio 2017\Projects\CustomBootloaderFlash\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.csproj.GenerateResource.Cache
 c:\users\willi\documents\visual studio 2017\Projects\CustomBootloaderFlash\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.exe
 c:\users\willi\documents\visual studio 2017\Projects\CustomBootloaderFlash\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.pdb
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\CustomBootloaderFlash.exe.config
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\CustomBootloaderFlash.exe
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\CustomBootloaderFlash.pdb
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Microsoft.Practices.Unity.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Prism.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Prism.Unity.Wpf.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Prism.Wpf.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\System.Windows.Interactivity.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Microsoft.Practices.Unity.xml
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Microsoft.Practices.Unity.Configuration.xml
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.xml
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Prism.xml
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Prism.Unity.Wpf.xml
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\Prism.Wpf.xml
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.csprojResolveAssemblyReference.cache
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\Views\MainWindow.baml
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\Views\MainWindow.g.cs
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\App.g.cs
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash_MarkupCompile.cache
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.g.resources
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.Properties.Resources.resources
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.csproj.GenerateResource.Cache
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.exe
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.pdb

@@ -85,7 +85,8 @@
             <Button Content="Start Flash!"
                     Width="100"
                     Margin="2"
-                    Padding="2" />
+                    Padding="2" 
+                    Command="{Binding Flash_Command}"/>
         </StackPanel>
         <Grid>
             <ProgressBar Minimum="{Binding ProgressBar_Minimum}"

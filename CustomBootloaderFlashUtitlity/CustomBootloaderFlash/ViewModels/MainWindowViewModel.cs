@@ -18,6 +18,11 @@ namespace CustomBootloaderFlash.ViewModels
         /// </summary>
         private string _title = "Custom Bootloader Flash Utility by William Huang";
 
+        /// <summary>
+        /// Boolean for target connection established
+        /// </summary>
+        private bool _isTargetConnected = false;
+
         #region Connect Button
         /// <summary>
         /// String to be shown on the Connect button
@@ -28,6 +33,7 @@ namespace CustomBootloaderFlash.ViewModels
         /// Whether the connect button is enabled or not 
         /// </summary>
         private bool _button_Connect_IsEnabled = true;
+        
         #endregion
 
         /// <summary>
@@ -173,6 +179,13 @@ namespace CustomBootloaderFlash.ViewModels
         }
         #endregion
 
+        #region Flash Button
+        /// <summary>
+        /// Delegate command for the flash button
+        /// </summary>
+        public DelegateCommand Flash_Command { get; private set; }
+        #endregion
+
         #endregion
 
         #region Constructors
@@ -185,12 +198,26 @@ namespace CustomBootloaderFlash.ViewModels
             ComPorts = _mainWindowModel.GetComPorts();
             BaudRates = new ObservableCollection<int>(_mainWindowModel.BaudRates);
 
+            #region Delegate Commands
             Connect_Command = new DelegateCommand(Connect_CommandExecute, Connect_CommandCanExecute);
             BrowseFile_Command = new DelegateCommand(BrowseFile_CommandExecute).ObservesCanExecute(() => BrowseFile_IsEnabled);
+            Flash_Command = new DelegateCommand(Flash_CommandExecute, Flash_CommandCanExecute);
+            #endregion
+
+            #region Dispatch Timer
+            // Dispatch timer for polling purposes
+            System.Windows.Threading.DispatcherTimer dispatchTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatchTimer.Tick += (sender, e) => 
+            {
+                Flash_Command.RaiseCanExecuteChanged();
+                if ((ProgressBar_Current++) > ProgressBar_Maximum) ProgressBar_Current = 0;
+            };
+            dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+            dispatchTimer.Start();
+            #endregion
 
         }
 
-        
         #endregion
 
         #region Private functions
@@ -200,10 +227,12 @@ namespace CustomBootloaderFlash.ViewModels
             if (_mainWindowModel.Target_Connect(SelectedComPort, SelectedBaudRate))
             {
                 MessageBox.Show("Connection Successful!");
+                _isTargetConnected = true;
             }
             else
             {
                 MessageBox.Show("Unable to connect to target");
+                _isTargetConnected = false;
             }
         }
 
@@ -242,6 +271,34 @@ namespace CustomBootloaderFlash.ViewModels
             ProgressBar_Maximum = (fileInfo.Length >> 10);
         }
         #endregion
+
+        #region Flash Command
+
+        /// <summary>
+        /// Determines if the flash command is enabled
+        /// </summary>
+        /// <returns></returns>
+        private bool Flash_CommandCanExecute()
+        {
+            bool result = false;
+
+            if (string.IsNullOrEmpty(FilePath) || _isTargetConnected == false)
+                result = false;
+            else
+                result = true;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Command to execute when the flash button is clicked
+        /// </summary>
+        async private void Flash_CommandExecute()
+        {
+  
+        }
+        #endregion
+
         #endregion
 
     }

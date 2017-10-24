@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\willi\documents\visual studio 2017\Projects\CustomBootloaderFlash\CustomBootloaderFlash\obj\Debug\
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\
 CustomBootloaderFlash
 none
 false
 DEBUG;TRACE
-C:\Users\willi\documents\visual studio 2017\Projects\CustomBootloaderFlash\CustomBootloaderFlash\App.xaml
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\App.xaml
 11892971807
 
 8351643140
-72719742999
+72-1137045121
 Views\MainWindow.xaml;
 
 False
