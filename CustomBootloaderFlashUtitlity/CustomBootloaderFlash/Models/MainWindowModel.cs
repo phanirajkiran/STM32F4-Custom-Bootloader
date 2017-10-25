@@ -18,7 +18,8 @@ namespace CustomBootloaderFlash.Models
         private SerialPort _serialport;
         private int[] _baudrates = { 115200 };
         private bool _flashInProgess = false;
-        private List<int> _receivedData = new List<int>();
+        private byte[] _receivedDataBuffer = new byte[2];
+        private bool _receivedDataFlag = false;
         private const int _timeoutTimeMilli = 1000;
         #region Commands to Target
         /// <summary>
@@ -59,13 +60,11 @@ namespace CustomBootloaderFlash.Models
         private void Target_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
-            int receivedData = sp.ReadByte();
-
-            if (_receivedData.Count >= 2)
-                _receivedData.Clear();
-
-            _receivedData.Add(receivedData);
-            
+            if(sp.BytesToRead >= 2)
+            {
+                sp.Read(_receivedDataBuffer, 0, 2);
+                _receivedDataFlag = true;
+            }       
         }
         /// <summary>
         /// Retrieves the available com ports in the system
@@ -104,7 +103,12 @@ namespace CustomBootloaderFlash.Models
             return checksum;
         }
 
-        private bool ValidateMessage(int[] msg)
+        /// <summary>
+        /// Validates if the message is uncorrupted
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        private bool ValidateMessage(byte[] msg)
         {
             int checksum = 0xFF;
             for(int i = 0; i < msg.Length; i++)
@@ -114,6 +118,28 @@ namespace CustomBootloaderFlash.Models
 
             if (checksum == 0x00)
                 return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// Checks to see if the received message contains an ACK in the first byte of the array
+        /// </summary>
+        /// <param name="msg">The received message</param>
+        /// <returns>
+        /// true if a valid msg and ACK is detected
+        /// false if a valid msg and ACK is not detected
+        /// </returns>
+        private bool CheckForACK(byte[] msg)
+        {
+            if (ValidateMessage(msg) == true) // Validate Checksum
+            {
+                // Check if ACK is received
+                if (msg[0] == 0x06)
+                    return true;
+                else
+                    return false;
+            }
             else
                 return false;
         }
@@ -128,20 +154,15 @@ namespace CustomBootloaderFlash.Models
             bool stateResult = false;
             bool timedout = false;
             bool _continue = true;
-            int[] receivedDataCopy = new int[2];
 
             Stopwatch timeoutWatch = new Stopwatch();
             timeoutWatch.Start();
             while (timedout == false && _continue == true)
             {
-                if (_receivedData.Count == 2)
+                if (_receivedDataFlag == true)
                 {
-                    _receivedData.CopyTo(receivedDataCopy);
-                    if (ValidateMessage(receivedDataCopy) == true)
-                    {
-                        _continue = false;
-                        stateResult = true;
-                    }
+                    stateResult = CheckForACK(_receivedDataBuffer);
+                    _continue = false;
                 }
 
                 timeoutWatch.Stop();
@@ -166,7 +187,19 @@ namespace CustomBootloaderFlash.Models
 
             while(_continue == true)
             {
+                if(_receivedDataFlag == true)
+                {
+                    if (ValidateMessage(_receivedDataBuffer) == true) // Validate Checksum
+                    {
+                        // Check if ACK is received
+                        if (_receivedDataBuffer[0] == 0x06)
+                            stateResult = true;
+                        else
+                            stateResult = false;
 
+                        _continue = false;
+                    }
+                }
             }
 
 
@@ -259,14 +292,13 @@ namespace CustomBootloaderFlash.Models
         /// </returns>
         public int Target_FlashStart()
         {
-            _receivedData.Clear();
             bool stateResult = false;
 
             stateResult = Flash_HookupState();
 
             if(stateResult == true)
             {
-                // Erase State
+                stateResult = Flash_EraseState();
             }
             else
             {
