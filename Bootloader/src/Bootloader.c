@@ -129,9 +129,9 @@ static void Bootloader_Init(void)
  */
 static void Send_ACK(UART_HandleTypeDef *handle)
 {
-    uint8_t msg = ACK;
+    uint8_t msg[2] = {ACK, ACK^0xFF};
     
-    HAL_UART_Tx(handle, &msg, 1);
+    HAL_UART_Tx(handle, msg, 2);
 }
 
 /*! \brief Sends an NACKnowledge byte to the host.
@@ -140,9 +140,9 @@ static void Send_ACK(UART_HandleTypeDef *handle)
  */
 static void Send_NACK(UART_HandleTypeDef *handle)
 {
-    uint8_t msg = NACK;
+    uint8_t msg[2] = {NACK, NACK ^ 0xFF};
     
-    HAL_UART_Tx(handle, &msg, 1);
+    HAL_UART_Tx(handle, msg, 1);
 }
 
 /*! \brief Validates the received message.

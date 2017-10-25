@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Bootloader.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Bootloader.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Sat Oct 21 23:26:38 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Oct 24 20:33:55 2017
 <BR><P>
 <H3>Maximum Stack Usage =         80 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -629,8 +629,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[61]"></a>_sys_exit</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, sys_exit.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sig_exit
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_exit_exit
+<BR><BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_exit_exit
+<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sig_exit
 </UL>
 
 <P><STRONG><a name="[6e]"></a>__default_signal_display</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, defsig_general.o(.text))
@@ -734,7 +734,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[77]"></a>Send_ACK</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, bootloader.o(i.Send_ACK))
+<P><STRONG><a name="[77]"></a>Send_ACK</STRONG> (Thumb, 22 bytes, Stack size 16 bytes, bootloader.o(i.Send_ACK))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Send_ACK &rArr; HAL_UART_Tx
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Tx
@@ -742,7 +742,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[79]"></a>Send_NACK</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, bootloader.o(i.Send_NACK))
+<P><STRONG><a name="[79]"></a>Send_NACK</STRONG> (Thumb, 22 bytes, Stack size 16 bytes, bootloader.o(i.Send_NACK))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Send_NACK &rArr; HAL_UART_Tx
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Tx

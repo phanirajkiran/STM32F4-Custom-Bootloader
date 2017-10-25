@@ -304,11 +304,18 @@ namespace CustomBootloaderFlash.ViewModels
         private async void Flash_CommandExecute()
         {
             _forceFlashButtonDisable = true;
-            await Task.Run(() =>
+            Task<int> t = new Task<int>(() =>
             {
-                _mainWindowModel.Target_FlashStart();
+                int result = _mainWindowModel.Target_FlashStart();
+                return result;
             });
+
+            t.Start();
+            await t;
+
+            int flashFlash = t.Result;
             _forceFlashButtonDisable = false;
+
         }
         #endregion
 

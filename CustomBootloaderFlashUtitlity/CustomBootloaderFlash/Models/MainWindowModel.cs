@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Threading;
+using System.Diagnostics;
 
 namespace CustomBootloaderFlash.Models
 {
@@ -18,6 +19,7 @@ namespace CustomBootloaderFlash.Models
         private int[] _baudrates = { 115200 };
         private bool _flashInProgess = false;
         private List<int> _receivedData = new List<int>();
+        private const int _timeoutTimeMilli = 1000;
         #region Commands to Target
         /// <summary>
         /// The erase command
@@ -105,7 +107,7 @@ namespace CustomBootloaderFlash.Models
         private bool ValidateMessage(int[] msg)
         {
             int checksum = 0xFF;
-            for(int i = 0; i > msg.Length; i++)
+            for(int i = 0; i < msg.Length; i++)
             {
                 checksum ^= msg[i];
             }
@@ -127,21 +129,9 @@ namespace CustomBootloaderFlash.Models
             bool timedout = false;
             bool _continue = true;
             int[] receivedDataCopy = new int[2];
-            // TODO: Send Restart message
 
-            #region Timedout Timer
-            System.Timers.Timer timedoutTimer = new System.Timers.Timer(1000);
-            timedoutTimer.Elapsed += ((o, e) =>
-            {
-                timedout = true;
-                timedoutTimer.Enabled = false;
-                
-            });
-            #endregion
-
-            #region Waiting for ACK within timeout period
-
-
+            Stopwatch timeoutWatch = new Stopwatch();
+            timeoutWatch.Start();
             while (timedout == false && _continue == true)
             {
                 if (_receivedData.Count == 2)
@@ -149,13 +139,36 @@ namespace CustomBootloaderFlash.Models
                     _receivedData.CopyTo(receivedDataCopy);
                     if (ValidateMessage(receivedDataCopy) == true)
                     {
-                        timedoutTimer.Enabled = false;
                         _continue = false;
                         stateResult = true;
                     }
                 }
+
+                timeoutWatch.Stop();
+                if(timeoutWatch.ElapsedMilliseconds >= _timeoutTimeMilli)
+                {
+                    timedout = true;
+                }
+                else
+                {
+                    timeoutWatch.Start();
+                }
             }
-            #endregion
+
+            return stateResult;
+        }
+
+        private bool Flash_EraseState()
+        {
+            bool stateResult = false;
+            bool _continue = true;
+            Target_SendCommand(Command_Erase);
+
+            while(_continue == true)
+            {
+
+            }
+
 
             return stateResult;
         }
@@ -234,10 +247,58 @@ namespace CustomBootloaderFlash.Models
             _serialport.Write(msg, 0, msg.Length);
         }
 
-        public void Target_FlashStart()
+        /// <summary>
+        /// Starts the flashing process 
+        /// </summary>
+        /// <returns>
+        /// 0 if flashing process is successful
+        /// 1 if there is an error in hooking up communication
+        /// 2 if there is an error in erasing target flash space
+        /// 3 if there is an error in downloading to target flash space
+        /// 4 if there is an error in checking the validity of the application after download
+        /// </returns>
+        public int Target_FlashStart()
         {
+            _receivedData.Clear();
             bool stateResult = false;
+
             stateResult = Flash_HookupState();
+
+            if(stateResult == true)
+            {
+                // Erase State
+            }
+            else
+            {
+                return 1;
+            }
+
+            if(stateResult == true)
+            {
+                // Download
+            }
+            else
+            {
+                return 2 ;
+            }
+
+            if(stateResult == true)
+            {
+                // Check Image state
+            }
+            else
+            {
+                return 3;
+            }
+
+            if(stateResult != true)
+            {
+                return 4;
+            }
+
+            // Jump to application command
+            // return stateResult; // Final flash result
+            return 0;
         }
         #endregion
 
