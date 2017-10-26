@@ -1,5 +1,4 @@
 ﻿using Prism.Mvvm;
-using CustomBootloaderFlash.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Prism.Commands;
@@ -9,6 +8,8 @@ using Microsoft.Win32;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using CustomBootloaderFlash.Models;
+using System.Windows.Data;
 
 namespace CustomBootloaderFlash.ViewModels
 {
@@ -44,10 +45,6 @@ namespace CustomBootloaderFlash.ViewModels
         private string _selectedComPort;
 
         private string _filepath;
-        /// <summary>
-        /// the main window model
-        /// </summary>
-        private MainWindowModel _mainWindowModel;
 
         #region Progress Bar
         /// <summary>
@@ -202,9 +199,8 @@ namespace CustomBootloaderFlash.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
-            _mainWindowModel = new MainWindowModel();
-            ComPorts = _mainWindowModel.GetComPorts();
-            BaudRates = new ObservableCollection<int>(_mainWindowModel.BaudRates);
+            //ComPorts = _mainWindowModel.GetComPorts();
+            //BaudRates = new ObservableCollection<int>(_mainWindowModel.BaudRates);
 
             #region Delegate Commands
             Connect_Command = new DelegateCommand(Connect_CommandExecute, Connect_CommandCanExecute);
@@ -218,7 +214,6 @@ namespace CustomBootloaderFlash.ViewModels
             dispatchTimer.Tick += (sender, e) => 
             {
                 Flash_Command.RaiseCanExecuteChanged();
-                ProgressBar_Current = _mainWindowModel.TotalBytesProcessed;
             };
             dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             dispatchTimer.Start();
@@ -232,27 +227,12 @@ namespace CustomBootloaderFlash.ViewModels
         #region Connect Button
         private void Connect_CommandExecute()
         {
-            if (_mainWindowModel.Target_Connect(SelectedComPort, SelectedBaudRate))
-            {
-                System.Diagnostics.Trace.TraceInformation("Connection Successful!");
-                _isTargetConnected = true;
-            }
-            else
-            {
-                System.Diagnostics.Trace.TraceInformation("Unable to connect to target");
-                _isTargetConnected = false;
-            }
+
         }
 
         private bool Connect_CommandCanExecute()
         {
-
-            if (String.IsNullOrEmpty(SelectedComPort))
-                Button_Connect_IsEnabled = false;
-            else
-                Button_Connect_IsEnabled = true;
-
-            return Button_Connect_IsEnabled;
+            return true;
         }
         #endregion
 
@@ -288,38 +268,43 @@ namespace CustomBootloaderFlash.ViewModels
         /// <returns></returns>
         private bool Flash_CommandCanExecute()
         {
-            bool result = false;
+            //bool result = false;
 
-            if (string.IsNullOrEmpty(FilePath) || _isTargetConnected == false || _forceFlashButtonDisable == true)
-                result = false;
-            else
-                result = true;
+            //if (string.IsNullOrEmpty(FilePath) || _isTargetConnected == false || _forceFlashButtonDisable == true)
+            //    result = false;
+            //else
+            //    result = true;
 
-            return result;
+            //return result;
+            return true;
         }
 
         /// <summary>
         /// Command to execute when the flash button is clicked
         /// </summary>
-        private async void Flash_CommandExecute()
+        private void Flash_CommandExecute()
         {
-            _forceFlashButtonDisable = true;
-            Task<int> t = new Task<int>(() =>
-            {
-                int result = _mainWindowModel.Target_FlashStart();
-                return result;
-            });
-
-            t.Start();
-            await t;
-
-            int flashFlash = t.Result;
-            _forceFlashButtonDisable = false;
-
         }
         #endregion
 
         #endregion
 
+        [ValueConversion(typeof(List<string>), typeof(string))]
+        public class ListToStringConverter : IValueConverter
+        {
+
+            public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            {
+                if (targetType != typeof(string))
+                    throw new InvalidOperationException("The target must be a String");
+
+                return String.Join(", ", ((List<string>)value).ToArray());
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

@@ -4,8 +4,9 @@
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}"
-        Height="400"
-        Width="250">
+        Height="410"
+        Width="250"
+        ResizeMode="NoResize">
     <StackPanel Margin="5">
         <Grid>
             <Grid.RowDefinitions>
@@ -85,8 +86,8 @@
             <Button Content="Start Flash!"
                     Width="100"
                     Margin="2"
-                    Padding="2" 
-                    Command="{Binding Flash_Command}"/>
+                    Padding="2"
+                    Command="{Binding Flash_Command}" />
         </StackPanel>
         <Grid>
             <ProgressBar Minimum="{Binding ProgressBar_Minimum}"
@@ -106,8 +107,24 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" />
             </StackPanel>
-
         </Grid>
+
+        <ListBox Height="170"
+                 Margin="2 5">
+            <ListBox.Items>
+                
+                <ListBoxItem>Test</ListBoxItem>
+                <ListBoxItem>Connection successful!</ListBoxItem>
+                <ListBoxItem>Test</ListBoxItem>
+                <ListBoxItem>Connection successful!</ListBoxItem>
+                <ListBoxItem>Test</ListBoxItem>
+                <ListBoxItem>Connection successful!</ListBoxItem>
+                <ListBoxItem>Test</ListBoxItem>
+                <ListBoxItem>Connection successful!</ListBoxItem>
+                <ListBoxItem>Test</ListBoxItem>
+                <ListBoxItem>Connection successful!</ListBoxItem>
+            </ListBox.Items>
+        </ListBox>
 
     </StackPanel>
 </Window>
