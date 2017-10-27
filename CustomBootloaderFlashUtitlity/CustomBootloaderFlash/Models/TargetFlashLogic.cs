@@ -112,10 +112,11 @@ namespace CustomBootloaderFlash.Models
 
             Logger = Logger.Instance;
 
-            _stateAction = new Action[6, 2]
+            _stateAction = new Action[7, 2]
             {
                 //Next Success, Next Fail
-                { Erase, TargetDisconnectFailure},  // Connect State
+                { Hookup, TargetDisconnectFailure},  // Connect State
+                { Erase, TargetDisconnectFailure},  // Hookup State
                 { Write, TargetDisconnectFailure},  // Erase State
                 { Check, TargetDisconnectFailure},  // Write State
                 {TargetDisconnectSuccess, TargetDisconnectFailure }, // Check state
@@ -208,6 +209,20 @@ namespace CustomBootloaderFlash.Models
             TargetDisconnect();
         }
 
+        /// <summary>
+        /// Communication hookup state between utility and target
+        /// Let target know to move into booloader state
+        /// </summary>
+        private void Hookup()
+        {
+            _currentState = ProcessState.Hookup;
+            Logger.Log("Hooking up communication");
+
+            // TODO: Send reset command
+
+            // Wait for ACK from target device
+        }
+
         private void Erase()
         {
             _currentState = ProcessState.Erase;
@@ -234,6 +249,7 @@ namespace CustomBootloaderFlash.Models
         private enum ProcessState
         {
             Connect,
+            Hookup,
             Erase,
             Write,
             Check,
