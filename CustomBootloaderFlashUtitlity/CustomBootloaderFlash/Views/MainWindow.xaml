@@ -5,8 +5,9 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}"
         Height="410"
-        Width="250"
+        Width="300"
         ResizeMode="NoResize">
+    
     <StackPanel Margin="5">
         <Grid>
             <Grid.RowDefinitions>
@@ -29,7 +30,7 @@
                       HorizontalAlignment="Right"
                       Width="100"
                       Margin="2"
-                      ItemsSource="{Binding ComPorts}"
+                      ItemsSource="{Binding ComPorts, Mode=OneWay}"
                       SelectedItem="{Binding SelectedComPort}" />
 
             <!-- Baud Rate Selection -->
@@ -47,8 +48,8 @@
                       SelectedItem="{Binding SelectedBaudRate}" />
 
             <!-- Connect Button -->
-            <Button Content="{Binding Button_Connect_Text, FallbackValue=Connect}"
-                    Command="{Binding Connect_Command}"
+            <Button Content="Test Connection"
+                    Command="{Binding TestConnect_Command}"
                     Grid.Row="2"
                     Grid.Column="2"
                     HorizontalAlignment="Center"
@@ -90,9 +91,9 @@
                     Command="{Binding Flash_Command}" />
         </StackPanel>
         <Grid>
-            <ProgressBar Minimum="{Binding ProgressBar_Minimum}"
-                         Maximum="{Binding ProgressBar_Maximum, FallbackValue=256}"
-                         Value="{Binding ProgressBar_Current, FallbackValue=0}"
+            <ProgressBar Minimum="0"
+                         Maximum="{Binding TargetFlashLogic.FlashSize}"
+                         Value="{Binding ProgressBar_Current}"
                          Height="25"
                          Margin="2"
                          x:Name="ProgressBar" />
@@ -109,22 +110,9 @@
             </StackPanel>
         </Grid>
 
-        <ListBox Height="170"
-                 Margin="2 5">
-            <ListBox.Items>
-                
-                <ListBoxItem>Test</ListBoxItem>
-                <ListBoxItem>Connection successful!</ListBoxItem>
-                <ListBoxItem>Test</ListBoxItem>
-                <ListBoxItem>Connection successful!</ListBoxItem>
-                <ListBoxItem>Test</ListBoxItem>
-                <ListBoxItem>Connection successful!</ListBoxItem>
-                <ListBoxItem>Test</ListBoxItem>
-                <ListBoxItem>Connection successful!</ListBoxItem>
-                <ListBoxItem>Test</ListBoxItem>
-                <ListBoxItem>Connection successful!</ListBoxItem>
-            </ListBox.Items>
-        </ListBox>
+        <ListView Height="170"
+                 Margin="2 5"
+                 ItemsSource="{Binding TargetFlashLogic.Logger.Logs}" />
 
     </StackPanel>
 </Window>

@@ -10,12 +10,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using CustomBootloaderFlash.Models;
 using System.Windows.Data;
+using log4net;
 
 namespace CustomBootloaderFlash.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
         #region Private Members
+        /// <summary>
+        /// Instance of the Target Flash Logic class
+        /// </summary>
+        private TargetFlashLogic _targetFlashLogic;
         /// <summary>
         /// Title of the main window
         /// </summary>
@@ -28,15 +33,11 @@ namespace CustomBootloaderFlash.ViewModels
 
         #region Connect Button
         /// <summary>
-        /// String to be shown on the Connect button
-        /// </summary>
-        private string _button_Connect_Text = "Connect!";
-
-        /// <summary>
         /// Whether the connect button is enabled or not 
         /// </summary>
         private bool _button_Connect_IsEnabled = true;
-        
+
+        private readonly ILog _log4netLogger;
         #endregion
 
         /// <summary>
@@ -71,6 +72,15 @@ namespace CustomBootloaderFlash.ViewModels
 
         #region Public Fields
         /// <summary>
+        /// Instance of the Target Flash Logic class
+        /// </summary>
+        public TargetFlashLogic TargetFlashLogic
+        {
+            get { return _targetFlashLogic; }
+            set { SetProperty(ref _targetFlashLogic, value); }
+        }
+
+        /// <summary>
         /// Title of the main window
         /// </summary>
         public string Title
@@ -81,15 +91,6 @@ namespace CustomBootloaderFlash.ViewModels
 
         #region Connect Button
         /// <summary>
-        /// String to be shown on the Connect button
-        /// </summary>
-        public string Button_Connect_Text
-        {
-            get { return _button_Connect_Text; }
-            set { SetProperty(ref _button_Connect_Text, value); }
-        }
-
-        /// <summary>
         /// Whether the connect button is enabled or not 
         /// </summary>
         public bool Button_Connect_IsEnabled
@@ -98,25 +99,24 @@ namespace CustomBootloaderFlash.ViewModels
             set
             {
                 SetProperty(ref _button_Connect_IsEnabled, value);
-
             }
         }
 
         /// <summary>
         /// Command for the connect button
         /// </summary>
-        public DelegateCommand Connect_Command { get; private set; }
+        public DelegateCommand TestConnect_Command { get; private set; }
         #endregion
 
         #region Comport and Baud Rate
         /// <summary>
         /// List of the available com ports
         /// </summary>
-        public ObservableCollection<string> ComPorts { get; set; } = new ObservableCollection<string>();
+        public List<string> ComPorts { get; set; }
         /// <summary>
         /// List of the available baud rates
         /// </summary>
-        public ObservableCollection<int> BaudRates { get; set; }
+        public List<int> BaudRates { get; set; }
         /// <summary>
         /// The Selected Baud Rate
         /// </summary>
@@ -128,29 +128,12 @@ namespace CustomBootloaderFlash.ViewModels
             set
             {
                 SetProperty(ref _selectedComPort, value);
-                Connect_Command.RaiseCanExecuteChanged();
+                TestConnect_Command.RaiseCanExecuteChanged();
             }
         }
         #endregion
 
         #region Progress Bar
-        /// <summary>
-        /// the max value for the progress bar
-        /// </summary>
-        public long ProgressBar_Maximum
-        {
-            get { return _progressbar_maximum; }
-            set { SetProperty(ref _progressbar_maximum, value); }
-        }
-
-        /// <summary>
-        /// the minimum value for the progress bar
-        /// </summary>
-        public long ProgressBar_Minimum
-        {
-            get { return _progressbar_minimum; }
-            set { SetProperty(ref _progressbar_minimum, value); }
-        }
         /// <summary>
         /// the current value of the progress bar
         /// </summary>
@@ -199,11 +182,12 @@ namespace CustomBootloaderFlash.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
-            //ComPorts = _mainWindowModel.GetComPorts();
-            //BaudRates = new ObservableCollection<int>(_mainWindowModel.BaudRates);
+            TargetFlashLogic = new TargetFlashLogic();
+            ComPorts = TargetFlashLogic.GetPorts();
+            BaudRates = TargetFlashLogic.GetBaudRates();
 
             #region Delegate Commands
-            Connect_Command = new DelegateCommand(Connect_CommandExecute, Connect_CommandCanExecute);
+            TestConnect_Command = new DelegateCommand(TestConnect_CommandExecute, TestConnect_CommandCanExecute);
             BrowseFile_Command = new DelegateCommand(BrowseFile_CommandExecute).ObservesCanExecute(() => BrowseFile_IsEnabled);
             Flash_Command = new DelegateCommand(Flash_CommandExecute, Flash_CommandCanExecute);
             #endregion
@@ -224,14 +208,17 @@ namespace CustomBootloaderFlash.ViewModels
         #endregion
 
         #region Private functions
-        #region Connect Button
-        private void Connect_CommandExecute()
+        #region Test Connect Button
+        private void TestConnect_CommandExecute()
         {
-
+            TargetFlashLogic.TestConnection(SelectedComPort, SelectedBaudRate);
         }
 
-        private bool Connect_CommandCanExecute()
+        private bool TestConnect_CommandCanExecute()
         {
+            if (string.IsNullOrEmpty(SelectedComPort))
+                return false;
+
             return true;
         }
         #endregion
@@ -253,10 +240,7 @@ namespace CustomBootloaderFlash.ViewModels
         private void UpdateFileSize()
         {
             FileInfo fileInfo = new FileInfo(FilePath);
-            string filesize= fileInfo.Length.ToString();
-
-            filesize = string.Format("{0}", fileInfo.Length >> 10);
-            ProgressBar_Maximum = (fileInfo.Length >> 10);
+            TargetFlashLogic.FlashSize = (fileInfo.Length >> 10);
         }
         #endregion
 
@@ -268,14 +252,9 @@ namespace CustomBootloaderFlash.ViewModels
         /// <returns></returns>
         private bool Flash_CommandCanExecute()
         {
-            //bool result = false;
+            if (string.IsNullOrEmpty(FilePath) || string.IsNullOrEmpty(SelectedComPort) || TargetFlashLogic.IsFlashInProgress == true)
+                return false;
 
-            //if (string.IsNullOrEmpty(FilePath) || _isTargetConnected == false || _forceFlashButtonDisable == true)
-            //    result = false;
-            //else
-            //    result = true;
-
-            //return result;
             return true;
         }
 
@@ -284,27 +263,12 @@ namespace CustomBootloaderFlash.ViewModels
         /// </summary>
         private void Flash_CommandExecute()
         {
+            TargetFlashLogic.StartFlash(SelectedComPort, SelectedBaudRate);
         }
         #endregion
 
         #endregion
 
-        [ValueConversion(typeof(List<string>), typeof(string))]
-        public class ListToStringConverter : IValueConverter
-        {
-
-            public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-            {
-                if (targetType != typeof(string))
-                    throw new InvalidOperationException("The target must be a String");
-
-                return String.Join(", ", ((List<string>)value).ToArray());
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-            {
-                throw new NotImplementedException();
-            }
-        }
+        
     }
 }

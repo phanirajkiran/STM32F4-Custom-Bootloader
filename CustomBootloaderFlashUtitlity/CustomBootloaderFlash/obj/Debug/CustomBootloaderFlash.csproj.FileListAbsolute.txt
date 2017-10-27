@@ -86,3 +86,6 @@ C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\Custo
 C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.csproj.CoreCompileInputs.cache
 C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.exe
 C:\Users\william.huang.APIGROUPINC\Documents\repos\Nucleo-411Re\Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\obj\Debug\CustomBootloaderFlash.pdb
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\log4net.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\UnityLog4NetExtension.dll
+C:\Embedded\Nucleo-411RE\STM32F4-Custom-Bootloader\CustomBootloaderFlashUtitlity\CustomBootloaderFlash\bin\Debug\log4net.xml
