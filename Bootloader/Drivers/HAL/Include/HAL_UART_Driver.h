@@ -18,7 +18,8 @@ extern "C" {
 #define HAL_UART_ERROR_FE           ((uint32_t)0x00000004)   /*!< Frame error         */
 #define HAL_UART_ERROR_ORE          ((uint32_t)0x00000008)   /*!< Overrun error       */
 #define HAL_UART_ERROR_DMA          ((uint32_t)0x00000010)   /*!< DMA transfer error  */
-#define HAL_UART_TIMEOUT            0x20                     /*!< UART timeout */
+#define HAL_UART_TIMEOUT            0x20                     /*!< UART timeout        */
+#define HAL_UART_INVALIDOP          0x30                     /*!< Invalid operation   */
     
 #define HAL_UART_WORD8              0U
 #define HAL_UART_WORD9              1U
@@ -108,7 +109,7 @@ void HAL_UART_Tx(UART_HandleTypeDef *handle, uint8_t *pBuffer, uint32_t len);
  * \param  timeout : timeout duration
  * \retval None
  */
-void HAL_UART_Rx(UART_HandleTypeDef *handle, uint8_t *buffer, uint32_t len, uint32_t timeout);
+uint32_t HAL_UART_Rx(UART_HandleTypeDef *handle, uint8_t *buffer, uint32_t len, uint32_t timeout);
 
 /*!
   * \brief  API to do UART data Transmission in non-blocking mode

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Bootloader.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Bootloader.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Oct 24 20:33:55 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Sat Oct 28 09:50:43 2017
 <BR><P>
 <H3>Maximum Stack Usage =         80 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -629,8 +629,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[61]"></a>_sys_exit</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, sys_exit.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_exit_exit
-<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sig_exit
+<BR><BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sig_exit
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_exit_exit
 </UL>
 
 <P><STRONG><a name="[6e]"></a>__default_signal_display</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, defsig_general.o(.text))
@@ -669,7 +669,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bootloader_Init
 </UL>
 
-<P><STRONG><a name="[74]"></a>HAL_UART_Rx</STRONG> (Thumb, 184 bytes, Stack size 32 bytes, hal_uart_driver.o(i.HAL_UART_Rx))
+<P><STRONG><a name="[74]"></a>HAL_UART_Rx</STRONG> (Thumb, 198 bytes, Stack size 32 bytes, hal_uart_driver.o(i.HAL_UART_Rx))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = HAL_UART_Rx &rArr; malloc &rArr; __Heap_Full &rArr; __Heap_ProvideMemory &rArr; free
 </UL>
 <BR>[Calls]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;free
@@ -694,15 +694,15 @@ Global Symbols
 <P><STRONG><a name="[4a]"></a>SystemInit</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, system_stm32f4xx.o(i.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f411xe.o(.text)
 </UL>
-<P><STRONG><a name="[5c]"></a>main</STRONG> (Thumb, 86 bytes, Stack size 0 bytes, bootloader.o(i.main))
+<P><STRONG><a name="[5c]"></a>main</STRONG> (Thumb, 106 bytes, Stack size 0 bytes, bootloader.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = main &rArr; HAL_UART_Rx &rArr; malloc &rArr; __Heap_Full &rArr; __Heap_ProvideMemory &rArr; free
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Rx
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ValidateMessage
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_NACK
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_ACK
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;JumpToApplication
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CheckChecksum
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bootloader_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
@@ -728,6 +728,12 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
+<P><STRONG><a name="[7c]"></a>CheckChecksum</STRONG> (Thumb, 48 bytes, Stack size 12 bytes, bootloader.o(i.CheckChecksum))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = CheckChecksum
+</UL>
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
 <P><STRONG><a name="[7b]"></a>JumpToApplication</STRONG> (Thumb, 40 bytes, Stack size 16 bytes, bootloader.o(i.JumpToApplication))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = JumpToApplication
 </UL>
@@ -746,12 +752,6 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Send_NACK &rArr; HAL_UART_Tx
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Tx
-</UL>
-<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[7c]"></a>ValidateMessage</STRONG> (Thumb, 44 bytes, Stack size 12 bytes, bootloader.o(i.ValidateMessage))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = ValidateMessage
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>

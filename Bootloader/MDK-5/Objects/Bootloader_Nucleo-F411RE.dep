@@ -1,5 +1,5 @@
 Dependencies for Project 'Bootloader', Target 'Nucleo-F411RE': (DO NOT MODIFY !)
-F (..\src\Bootloader.c)(0x59EFDBEF)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Nucleo-F411RE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\objects\bootloader.o --omf_browse .\objects\bootloader.crf --depend .\objects\bootloader.d)
+F (..\src\Bootloader.c)(0x59F48B2F)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Nucleo-F411RE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\objects\bootloader.o --omf_browse .\objects\bootloader.crf --depend .\objects\bootloader.d)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f411xe.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cm4.h)(0x59E90F58)
@@ -10,10 +10,10 @@ I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
 I (..\Drivers\HAL\Include\HAL_GPIO_Driver.h)(0x59EB56B2)
-I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)
+I (..\Drivers\HAL\Include\HAL_Common.h)(0x59F481A9)
 I (..\Drivers\HAL\Include\HAL_RCC_Driver.h)(0x59EB5A63)
 I (..\Drivers\HAL\Include\HAL_CRC_Driver.h)(0x59E95A52)
-I (..\Drivers\HAL\Include\HAL_UART_Driver.h)(0x59EC05C7)
+I (..\Drivers\HAL\Include\HAL_UART_Driver.h)(0x59F48252)
 F (.\startup_stm32f411xe.s)(0x59E90F58)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\_Nucleo-F411RE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include--pd "__UVISION_VERSION SETA 524" --pd "_RTE_ SETA 1" --pd "STM32F411xE SETA 1"--list .\listings\startup_stm32f411xe.lst --xref -o .\objects\startup_stm32f411xe.o --depend .\objects\startup_stm32f411xe.d)
 F (.\system_stm32f4xx.c)(0x59E90F58)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Nucleo-F411RE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\objects\system_stm32f4xx.o --omf_browse .\objects\system_stm32f4xx.crf --depend .\objects\system_stm32f4xx.d)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59E90F58)
@@ -26,7 +26,7 @@ I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
 F (..\Drivers\HAL\Include\HAL_GPIO_Driver.h)(0x59EB56B2)()
-F (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)()
+F (..\Drivers\HAL\Include\HAL_Common.h)(0x59F481A9)()
 F (..\Drivers\HAL\Source\HAL_GPIO_Driver.c)(0x59EB51BA)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Nucleo-F411RE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\objects\hal_gpio_driver.o --omf_browse .\objects\hal_gpio_driver.crf --depend .\objects\hal_gpio_driver.d)
 I (..\Drivers\HAL\Include\HAL_GPIO_Driver.h)(0x59EB56B2)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59E90F58)
@@ -38,7 +38,7 @@ I (..\CMSIS\Include\cmsis_armcc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
-I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)
+I (..\Drivers\HAL\Include\HAL_Common.h)(0x59F481A9)
 F (..\Drivers\HAL\Include\HAL_CRC_Driver.h)(0x59E95A52)()
 F (..\Drivers\HAL\Source\HAL_CRC_Driver.c)(0x59E95A7C)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Nucleo-F411RE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\objects\hal_crc_driver.o --omf_browse .\objects\hal_crc_driver.crf --depend .\objects\hal_crc_driver.d)
 I (..\Drivers\HAL\Include\HAL_CRC_Driver.h)(0x59E95A52)
@@ -51,9 +51,9 @@ I (..\CMSIS\Include\cmsis_armcc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
-I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)
-F (..\Drivers\HAL\Source\HAL_UART_Driver.c)(0x59EC0ED5)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Nucleo-F411RE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\objects\hal_uart_driver.o --omf_browse .\objects\hal_uart_driver.crf --depend .\objects\hal_uart_driver.d)
-I (..\Drivers\HAL\Include\HAL_UART_Driver.h)(0x59EC05C7)
+I (..\Drivers\HAL\Include\HAL_Common.h)(0x59F481A9)
+F (..\Drivers\HAL\Source\HAL_UART_Driver.c)(0x59F4825E)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Nucleo-F411RE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\objects\hal_uart_driver.o --omf_browse .\objects\hal_uart_driver.crf --depend .\objects\hal_uart_driver.d)
+I (..\Drivers\HAL\Include\HAL_UART_Driver.h)(0x59F48252)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\stm32f411xe.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cm4.h)(0x59E90F58)
@@ -63,9 +63,9 @@ I (..\CMSIS\Include\cmsis_armcc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
-I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)
+I (..\Drivers\HAL\Include\HAL_Common.h)(0x59F481A9)
 I (..\Drivers\HAL\Include\HAL_RCC_Driver.h)(0x59EB5A63)
-F (..\Drivers\HAL\Include\HAL_UART_Driver.h)(0x59EC05C7)()
+F (..\Drivers\HAL\Include\HAL_UART_Driver.h)(0x59F48252)()
 F (..\Drivers\HAL\Include\HAL_RCC_Driver.h)(0x59EB5A63)()
 F (..\Drivers\HAL\Source\HAL_RCC_Driver.c)(0x59EAB9F1)(--c99 -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\CMSIS\Device\ST\STM32F4xx\Include -I ..\CMSIS\Include -I ..\Drivers\HAL\Include-I.\RTE\_Nucleo-F411RE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE-o .\objects\hal_rcc_driver.o --omf_browse .\objects\hal_rcc_driver.crf --depend .\objects\hal_rcc_driver.d)
 I (..\Drivers\HAL\Include\HAL_RCC_Driver.h)(0x59EB5A63)
@@ -78,4 +78,4 @@ I (..\CMSIS\Include\cmsis_armcc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmFunc.h)(0x59E90F58)
 I (..\CMSIS\Include\core_cmSimd.h)(0x59E90F58)
 I (..\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x59E90F58)
-I (..\Drivers\HAL\Include\HAL_Common.h)(0x59E95935)
+I (..\Drivers\HAL\Include\HAL_Common.h)(0x59F481A9)

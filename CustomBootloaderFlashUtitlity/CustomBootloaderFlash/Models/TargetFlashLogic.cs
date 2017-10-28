@@ -120,7 +120,7 @@ namespace CustomBootloaderFlash.Models
                 { Erase, TargetDisconnectFailure},  // Hookup State
                 { Write, TargetDisconnectFailure},  // Erase State
                 { Check, TargetDisconnectFailure},  // Write State
-                {TargetDisconnectSuccess, TargetDisconnectFailure }, // Check state
+                { TargetDisconnectSuccess, TargetDisconnectFailure }, // Check state
                 {null, null}, // Target Disconnect Success State
                 {null, null}, // Target Disconnect Failure State
             };
@@ -256,7 +256,7 @@ namespace CustomBootloaderFlash.Models
             }
             else
             {
-                tx[0] = (byte)TargetCommands.Erase;
+                tx[0] = (byte)TargetResponse.ACK;
                 tx[1] = CalculateChecksum(tmp, 1);
                 SerialWrite(tx, 0, 2);
                 _command = Command.Next_Sucess;

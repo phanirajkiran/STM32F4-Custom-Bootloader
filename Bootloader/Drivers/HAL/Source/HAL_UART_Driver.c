@@ -232,7 +232,7 @@ void HAL_UART_Tx(UART_HandleTypeDef *handle, uint8_t *pBuffer, uint32_t len)
  * \param  timeout : timeout duration
  * \retval None
  */
-void HAL_UART_Rx(UART_HandleTypeDef *handle, uint8_t *buffer, uint32_t len, uint32_t timeout)
+uint32_t HAL_UART_Rx(UART_HandleTypeDef *handle, uint8_t *buffer, uint32_t len, uint32_t timeout)
 {
     handle->RxXferCount = len;
     handle->RxXferSize = len;
@@ -241,9 +241,10 @@ void HAL_UART_Rx(UART_HandleTypeDef *handle, uint8_t *buffer, uint32_t len, uint
     uint8_t msg[handle->RxXferSize];
     uint8_t i = 0;
     /* Check to see if the state is Ready */
-    if(handle->RxState != HAL_UART_STATE_READY) return;
+    if(handle->RxState != HAL_UART_STATE_READY) 
+        return HAL_BUSY;
 
-    /* Now check to see if uart mode handles transmission */
+    /* Now check to see if uart mode handles reception */
     if((handle->Init.Mode & HAL_UART_MODE_RX) == HAL_UART_MODE_RX)
     {
         handle->RxState = HAL_UART_STATE_BUSY_RX;
@@ -251,7 +252,7 @@ void HAL_UART_Rx(UART_HandleTypeDef *handle, uint8_t *buffer, uint32_t len, uint
         HAL_UART_Disable_RXNE(handle);
         
         
-        /* Wait for the transmit register to be empty */
+        /* Wait for the receive register to not be empty */
         while(handle->RxXferCount--)
         {
             while((handle->Instance->SR & USART_SR_RXNE) == 0)
@@ -259,7 +260,7 @@ void HAL_UART_Rx(UART_HandleTypeDef *handle, uint8_t *buffer, uint32_t len, uint
                 if(timeout-- == 0)
                 {
                     handle->RxState = HAL_UART_STATE_READY;
-                    return;
+                    return HAL_UART_TIMEOUT;
                 }
             }
             msg[i++] = (uint8_t)handle->Instance->DR;
@@ -271,5 +272,10 @@ void HAL_UART_Rx(UART_HandleTypeDef *handle, uint8_t *buffer, uint32_t len, uint
         }
         handle->RxState = HAL_UART_STATE_READY;
         
+        return HAL_UART_ERROR_NONE;
+    }
+    else
+    {
+        return HAL_UART_INVALIDOP;
     }
 }

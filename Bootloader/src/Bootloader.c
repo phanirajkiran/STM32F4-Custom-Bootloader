@@ -3,74 +3,125 @@
 #include "HAL_RCC_Driver.h"
 #include "HAL_CRC_Driver.h"
 #include "HAL_UART_Driver.h"
+#include "HAL_Flash_Driver.h"
 
 #define BOOT_FLAG_ADDRESS           0x08004000U
 #define APPLICATION_START_ADDRESS   0x08008000U
 #define TIMEOUT_VALUE               SystemCoreClock/4
 
 #define ACK     0x06U
-#define NACK    0x15U
+#define NACK    0x16U
 
-UART_HandleTypeDef UartHandle;
-uint8_t pRxBuffer[10];
+/*****************************************************************************/
+/*                          Private Variables                                */
+/*****************************************************************************/
+/*! \brief The uart handle
+ */
+static UART_HandleTypeDef UartHandle;
 
-static uint32_t CheckBootFlag(void);
+/*! \brief Buffer for received messages
+ */
+static uint8_t pRxBuffer[10];
+
+typedef enum
+{
+    ERASE = 0x43,
+} COMMANDS;
+
+/*****************************************************************************/
+/*                     Private Function Prototypes                           */
+/*****************************************************************************/
+/*! \brief Jumps to the main application.
+ */
 static void JumpToApplication(void);
+
+/*! \brief  Initializes the bootloader for host communication.
+ *          Communication will be done through the UART peripheral.
+ */
 static void Bootloader_Init(void);
+
+/*! \brief Sends an ACKnowledge byte to the host.
+ *  
+ *  \param  *UartHandle The UART handle
+ */
 static void Send_ACK(UART_HandleTypeDef *UartHandle);
+
+/*! \brief Sends an NACKnowledge byte to the host.
+ *  
+ *  \param  *UartHandle The UART handle
+ */
 static void Send_NACK(UART_HandleTypeDef *UartHandle);
-static uint8_t ValidateMessage(uint8_t *pBuffer, uint32_t len);
+
+/*! \brief Validates the checksum of the message.
+ *  Validates the received message through a simple checksum.
+ *
+ *  Each byte of the message (including the received checksum) is XOR'd with 
+ *  the previously calculated checksum value. The result should be 0x00.
+ *  Note: The first byte of the message is XOR'd with an initial value of 0xFF
+ *  
+ *  \param  *pBuffer    The buffer where the message is stored.
+ *  \param  len         The length of the message;
+ *  \retval uint8_t     The result of the validation. 1 = OK. 0 = FAIL
+ */
+static uint8_t CheckChecksum(uint8_t *pBuffer, uint32_t len);
+
+/*! \brief Erase flash function
+ */
+static void Erase(void);
 
 int main(void)
 {
-    uint8_t nack_count = 0;
     SystemCoreClockUpdate();
-    /*
-    if(CheckBootFlag() == 0)
-        JumpToApplication();
-    */
-    
     Bootloader_Init();
     
     /* Hookup Host and Target                           */
     /* First send an ACK. Host should reply with ACK    */
-    /* If no valid ACK is received, send NACK           */
-    /* If the amount of NACK sent is greater than 3,    */
+    /* If no valid ACK is received within TIMEOUT_VALUE */
     /* then jump to main application                    */
     Send_ACK(&UartHandle);
-    HAL_UART_Rx(&UartHandle, pRxBuffer, 2, TIMEOUT_VALUE);
-    while(ValidateMessage(pRxBuffer, 2) != 1)
+    if(HAL_UART_Rx(&UartHandle, pRxBuffer, 2, TIMEOUT_VALUE) == HAL_UART_TIMEOUT)
     {
         Send_NACK(&UartHandle);
-        nack_count++;
-        if(nack_count >= 3)
-        {
-            nack_count = 0;
-            JumpToApplication();
-        }
-        HAL_UART_Rx(&UartHandle, pRxBuffer, 2, TIMEOUT_VALUE);
+        JumpToApplication();
     }
+    if(CheckChecksum(pRxBuffer, 2) != 1 || pRxBuffer[0] != ACK)
+    {
+        Send_NACK(&UartHandle);
+        JumpToApplication();
+    }
+    
+    /* At this point, hookup communication is complete */
+    /* Wait for commands and execute accordingly       */
     
 	for(;;)
 	{
+        // wait for a command
+        HAL_UART_Rx(&UartHandle, pRxBuffer, 2, TIMEOUT_VALUE);
+        if(CheckChecksum(pRxBuffer, 2) != 1)
+        {
+            Send_NACK(&UartHandle);
+        }
+        else
+        {
+            switch(pRxBuffer[0])
+            {
+                case ERASE:
+                    Erase();
+                    break;
+                default: // Unsupported command
+                    Send_NACK(&UartHandle);
+                    break;
+            }
+        }
+        
 	}
+    
+    for(;;);
+    
 	return 0;
 }
 
-/*! \brief Checks for Boot flag in memory.
- *  Checks in memory for the boot flag condition.
- *
- *  If a valid boot flag message is detected, then return 1. Else, return 0.
- *
- *  \retval uint8_t 1 = Valid boot flag detected. 0 = Invalid boot flag
- */
-static uint32_t CheckBootFlag(void)
-{
-    return 0; 
-}
-
 /*! \brief Jumps to the main application.
- *
  */
 static void JumpToApplication(void)
 {
@@ -91,7 +142,6 @@ static void JumpToApplication(void)
         // Now jump to the main application
         pmain_app();
     }
-    
     
 }
 
@@ -129,7 +179,7 @@ static void Bootloader_Init(void)
  */
 static void Send_ACK(UART_HandleTypeDef *handle)
 {
-    uint8_t msg[2] = {ACK, ACK^0xFF};
+    uint8_t msg[2] = {ACK, ACK};
     
     HAL_UART_Tx(handle, msg, 2);
 }
@@ -140,12 +190,12 @@ static void Send_ACK(UART_HandleTypeDef *handle)
  */
 static void Send_NACK(UART_HandleTypeDef *handle)
 {
-    uint8_t msg[2] = {NACK, NACK ^ 0xFF};
+    uint8_t msg[2] = {NACK, NACK};
     
     HAL_UART_Tx(handle, msg, 1);
 }
 
-/*! \brief Validates the received message.
+/*! \brief Validates the checksum of the message.
  *  Validates the received message through a simple checksum.
  *
  *  Each byte of the message (including the received checksum) is XOR'd with 
@@ -156,7 +206,7 @@ static void Send_NACK(UART_HandleTypeDef *handle)
  *  \param  len         The length of the message;
  *  \retval uint8_t     The result of the validation. 1 = OK. 0 = FAIL
  */
-static uint8_t ValidateMessage(uint8_t *pBuffer, uint32_t len)
+static uint8_t CheckChecksum(uint8_t *pBuffer, uint32_t len)
 {
     uint8_t initial = 0xFF;
     uint8_t result = 0x7F; /* some random result value */
@@ -168,6 +218,8 @@ static uint8_t ValidateMessage(uint8_t *pBuffer, uint32_t len)
         result ^= *pBuffer++;
     }
     
+    result ^= 0xFF;
+    
     if(result == 0x00)
     {
         return 1;
@@ -176,4 +228,50 @@ static uint8_t ValidateMessage(uint8_t *pBuffer, uint32_t len)
     {
         return 0;
     }
+}
+
+/*! \brief Erase flash function
+ */
+static void Erase(void)
+{
+    Flash_EraseInitTypeDef flashEraseConfig;
+    uint32_t sectorError;
+    
+    Send_ACK(&UartHandle);
+    
+    // Receive the number of pages to be erased (1 byte)
+    // the initial sector to erase  (1 byte)
+    // and the checksum             (1 byte)
+    while(HAL_UART_Rx(&UartHandle, pRxBuffer, 3, TIMEOUT_VALUE) == HAL_UART_TIMEOUT);
+    // validate checksum
+    if(CheckChecksum(pRxBuffer, 3) != 1)
+    {
+        Send_NACK(&UartHandle);
+        return;
+    }
+    
+    if(pRxBuffer[0] == 0xFF)
+    {
+        // global erase: not supported
+        Send_NACK(&UartHandle);
+    }
+    else
+    {
+        // Sector erase:
+        flashEraseConfig.TypeErase = HAL_FLASH_TYPEERASE_SECTOR;
+        
+        // Set the number of sectors to erase
+        flashEraseConfig.NbSectors = pRxBuffer[0];
+        
+        // Set the initial sector to erase
+        flashEraseConfig.Sector = pRxBuffer[1];
+        
+        // perform erase
+        HAL_Flash_Unlock();
+        HAL_Flash_Erase(&flashEraseConfig, &sectorError);
+        HAL_Flash_Lock();
+        
+        Send_ACK(&UartHandle);
+    }
+    
 }

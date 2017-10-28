@@ -450,6 +450,16 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\HAL\Source\HAL_RCC_Driver.c</FilePath>
             </File>
+            <File>
+              <FileName>HAL_Flash_Driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drivers\HAL\Include\HAL_Flash_Driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_Flash_Driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\HAL\Source\HAL_Flash_Driver.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
