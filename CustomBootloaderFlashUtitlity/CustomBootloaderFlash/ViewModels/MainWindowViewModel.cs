@@ -198,11 +198,11 @@ namespace CustomBootloaderFlash.ViewModels
             dispatchTimer.Tick += (sender, e) => 
             {
                 Flash_Command.RaiseCanExecuteChanged();
+                TestConnect_Command.RaiseCanExecuteChanged();
             };
             dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             dispatchTimer.Start();
             #endregion
-
         }
 
         #endregion
@@ -216,7 +216,7 @@ namespace CustomBootloaderFlash.ViewModels
 
         private bool TestConnect_CommandCanExecute()
         {
-            if (string.IsNullOrEmpty(SelectedComPort))
+            if (string.IsNullOrEmpty(SelectedComPort) || TargetFlashLogic.IsFlashInProgress == true)
                 return false;
 
             return true;
@@ -261,9 +261,20 @@ namespace CustomBootloaderFlash.ViewModels
         /// <summary>
         /// Command to execute when the flash button is clicked
         /// </summary>
-        private void Flash_CommandExecute()
+        private async void Flash_CommandExecute()
         {
-            TargetFlashLogic.StartFlash(SelectedComPort, SelectedBaudRate);
+            TargetFlashLogic.IsFlashInProgress = true;
+            Flash_Command.RaiseCanExecuteChanged();
+            
+            Logger _logger = Logger.Instance;
+            _logger.Clear();
+            await Task.Run(() =>
+            {
+                TargetFlashLogic.StartFlash(SelectedComPort, SelectedBaudRate);
+            });
+
+            _logger.Log("Finish");
+            Flash_Command.RaiseCanExecuteChanged();
         }
         #endregion
 

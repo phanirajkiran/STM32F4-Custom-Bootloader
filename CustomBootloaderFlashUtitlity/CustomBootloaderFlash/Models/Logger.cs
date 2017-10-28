@@ -39,7 +39,11 @@ namespace CustomBootloaderFlash.Models
         /// <param name="log"></param>
         public void Log(string log)
         {
-            Logs.Add(log);
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                Logs.Add(log);
+            });
+            
         }
 
         /// <summary>

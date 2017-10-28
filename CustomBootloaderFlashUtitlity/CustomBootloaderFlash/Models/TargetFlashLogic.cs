@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using System.ComponentModel;
 
 namespace CustomBootloaderFlash.Models
 {
@@ -51,7 +52,7 @@ namespace CustomBootloaderFlash.Models
         /// <summary>
         /// Boolean for if the flash is in progress
         /// </summary>
-        public bool IsFlashInProgress { get; set; }
+        public bool IsFlashInProgress { get; set; } = false;
         #endregion
 
         #region Public Functions
@@ -90,12 +91,12 @@ namespace CustomBootloaderFlash.Models
         public void StartFlash(string portName, int baud)
         {
             IsFlashInProgress = true;
-            Logger.Logs.Clear();
             TargetConnect(portName, baud);
-            while(IsFlashInProgress == true)
+            while (IsFlashInProgress == true)
             {
                 ExecuteState(_command);
             }
+
         }
         #endregion
 
@@ -124,6 +125,8 @@ namespace CustomBootloaderFlash.Models
                 {null, null}, // Target Disconnect Failure State
             };
         }
+
+
         #endregion
 
         #region Private Fields
@@ -150,6 +153,23 @@ namespace CustomBootloaderFlash.Models
         /// The size of the flash that has been downloaded to target, in kb
         /// </summary>
         private long _flashedBytes;
+
+        /// <summary>
+        /// Possible responses from the target
+        /// </summary>
+        private enum TargetResponse
+        {
+            ACK = 0x06,
+            NACK = 0x16
+        } ;
+
+        /// <summary>
+        /// Possible commands for the target
+        /// </summary>
+        private enum TargetCommands
+        {
+            Erase = 0x43
+        };
         #endregion
 
         #region Private Functions
@@ -158,6 +178,7 @@ namespace CustomBootloaderFlash.Models
         /// </summary>
         private void TargetConnect(string portName, int baud)
         {
+            TargetDisconnect();
             _serialPort.PortName = portName;
             _serialPort.BaudRate = baud;
             _currentState = ProcessState.Connect;
@@ -165,7 +186,9 @@ namespace CustomBootloaderFlash.Models
             try
             {
                 _serialPort.Open();
-                Logger.Log("Connected to target.");
+                _serialPort.DiscardInBuffer();
+                _serialPort.DiscardOutBuffer();
+                Logger.Log("Target connected");
                 IsTargetConnected = true;
                 _command = Command.Next_Sucess;
             }
@@ -174,7 +197,6 @@ namespace CustomBootloaderFlash.Models
                 Logger.Log("Failed to connect to target.");
                 _command = Command.Next_Fail;
             }
-            
         }
 
         /// <summary>
@@ -185,10 +207,6 @@ namespace CustomBootloaderFlash.Models
             if (_serialPort.IsOpen)
             {
                 _serialPort.Close();
-            }
-
-            if (_serialPort.IsOpen == false)
-            {
                 IsTargetConnected = false;
                 Logger.Log("Disconnected from target.");
             }
@@ -198,14 +216,18 @@ namespace CustomBootloaderFlash.Models
         {
             _currentState = ProcessState.Disconnect_Sucess;
             Logger.Log("Flash Success!");
+
             TargetDisconnect();
             IsFlashInProgress = false;
+
+
         }
 
         private void TargetDisconnectFailure()
         {
             _currentState = ProcessState.Disconnect_Failure;
             Logger.Log("Flash failed!");
+
             TargetDisconnect();
         }
 
@@ -216,11 +238,29 @@ namespace CustomBootloaderFlash.Models
         private void Hookup()
         {
             _currentState = ProcessState.Hookup;
-            Logger.Log("Hooking up communication");
+            Logger.Log("Hooking up communication...");
+
+            byte[] tx = new byte[2];
+            byte[] tmp = new byte[1];
 
             // TODO: Send reset command
+            Logger.Log("  Resetting target...");
 
             // Wait for ACK from target device
+            Logger.Log("  Waiting for ACK from target...");
+            SerialRead(tmp, 0, 1);
+            if(tmp[0] != (byte)TargetResponse.ACK)
+            {
+                Logger.Log("  Invalid response from target");
+                _command = Command.Next_Fail;
+            }
+            else
+            {
+                tx[0] = (byte)TargetCommands.Erase;
+                tx[1] = CalculateChecksum(tmp, 1);
+                SerialWrite(tx, 0, 2);
+                _command = Command.Next_Sucess;
+            }
         }
 
         private void Erase()
@@ -239,6 +279,57 @@ namespace CustomBootloaderFlash.Models
         {
             _currentState = ProcessState.Check;
             Logger.Log("Checking flash...");
+        }
+
+        /// <summary>
+        /// Asynchronous read from serial port
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        private void SerialRead(byte[] buffer, int offset, int count)
+        {
+            var bs = _serialPort.BaseStream;
+            int br = 0;
+
+            while(br < count)
+            {
+               
+                br += bs.Read(buffer, offset + br, count - br);
+            }
+        }
+
+        /// <summary>
+        /// Asycnhronously writes to the target
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        private void SerialWrite(byte[] data, int offset, int count)
+        {
+            var bs = _serialPort.BaseStream;
+            bs.Write(data, offset, count);
+        }
+
+        /// <summary>
+        /// Returns an 8-bit two's complement XOR checksum
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        private byte CalculateChecksum(byte[] data, int count)
+        {
+            byte checksum = 0xFF;
+            for(int i = 0; i < count; i++)
+            {
+                checksum ^= data[i];
+            }
+
+            checksum ^= 0xFF;
+
+            return checksum;
         }
         #endregion
 
