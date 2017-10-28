@@ -32,31 +32,39 @@ void HAL_Flash_Lock(void)
  *                          0xFFFFFFFFU means that all the sectors have been
  *                          correctly erased
  */
-void HAL_Flash_Erase(Flash_EraseInitTypeDef *pEraseinit, uint32_t *SectorError)
+void HAL_Flash_Erase(Flash_EraseInitTypeDef *pEraseInit, uint32_t *SectorError)
 {
     uint8_t i;
     uint8_t sectorNumber;
     
     // wait to make sure that no flash operation is ongoing
     while(FLASH->SR & FLASH_SR_BSY);    
+    FLASH->CR |= pEraseInit->TypeErase;
     
-    if(pEraseinit->TypeErase == HAL_FLASH_TYPEERASE_SECTOR)
+    if(pEraseInit->TypeErase == HAL_FLASH_TYPEERASE_SECTOR)
     {
         // Check to make sure that that number of sectors to erase is valid
-        if( (pEraseinit->NbSectors < 1) || 
-            (pEraseinit->NbSectors > (8 - pEraseinit->Sector)))
+        if( (pEraseInit->NbSectors < 1) || 
+            (pEraseInit->NbSectors > (8 - pEraseInit->Sector)))
         {
             // Error
             return;
         }
-        sectorNumber = pEraseinit->Sector + pEraseinit->NbSectors - 1;
-        FLASH->CR |= (sectorNumber << FLASH_CR_SNB_Pos);
+        
+        for(i = 0; i < pEraseInit->NbSectors; i++)
+        {
+            sectorNumber = pEraseInit->Sector + i;
+            FLASH->CR |= (sectorNumber << FLASH_CR_SNB_Pos);
+            FLASH->CR |= FLASH_CR_STRT; // Start Erase
+            while(FLASH->SR & FLASH_SR_BSY);    // Wait til finish
+        }
     }
+    else
+    {
+        FLASH->CR |= FLASH_CR_STRT; // Start Erase
+        // Wait until the operation is completed
+        while(FLASH->SR & FLASH_SR_BSY);    
+    }
+
     
-    FLASH->CR |= pEraseinit->TypeErase;
-    
-    FLASH->CR |= FLASH_CR_STRT; // Start Erase
-    
-    // Wait until the operation is completed
-    while(FLASH->SR & FLASH_SR_BSY);    
 }

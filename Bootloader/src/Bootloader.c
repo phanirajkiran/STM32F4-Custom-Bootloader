@@ -96,7 +96,8 @@ int main(void)
 	for(;;)
 	{
         // wait for a command
-        HAL_UART_Rx(&UartHandle, pRxBuffer, 2, TIMEOUT_VALUE);
+        while(HAL_UART_Rx(&UartHandle, pRxBuffer, 2, TIMEOUT_VALUE) == HAL_UART_TIMEOUT);
+        
         if(CheckChecksum(pRxBuffer, 2) != 1)
         {
             Send_NACK(&UartHandle);
@@ -192,7 +193,7 @@ static void Send_NACK(UART_HandleTypeDef *handle)
 {
     uint8_t msg[2] = {NACK, NACK};
     
-    HAL_UART_Tx(handle, msg, 1);
+    HAL_UART_Tx(handle, msg, 2);
 }
 
 /*! \brief Validates the checksum of the message.

@@ -13,3 +13,4 @@
 .\objects\bootloader.o: ..\Drivers\HAL\Include\HAL_RCC_Driver.h
 .\objects\bootloader.o: ..\Drivers\HAL\Include\HAL_CRC_Driver.h
 .\objects\bootloader.o: ..\Drivers\HAL\Include\HAL_UART_Driver.h
+.\objects\bootloader.o: ..\Drivers\HAL\Include\HAL_Flash_Driver.h

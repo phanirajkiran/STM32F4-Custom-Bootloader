@@ -1,4 +1,4 @@
-#findef _HAL_FLASH_DRIVER_H_
+#ifndef _HAL_FLASH_DRIVER_H_
 #define _HAL_FLASH_DRIVER_H_
 
 #include "stm32f4xx.h"                  // Device header
@@ -57,7 +57,7 @@ void HAL_Flash_Lock(void);
  *                          0xFFFFFFFFU means that all the sectors have been
  *                          correctly erased
  */
-void HAL_Flash_Erase(Flash_EraseInitTypedef *pEraseinit, uint32_t *SectorError);
+void HAL_Flash_Erase(Flash_EraseInitTypeDef *pEraseinit, uint32_t *SectorError);
     
 
 #ifdef __cplusplus

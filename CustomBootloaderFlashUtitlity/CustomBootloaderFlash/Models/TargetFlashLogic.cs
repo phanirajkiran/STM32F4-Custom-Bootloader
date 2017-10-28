@@ -170,6 +170,18 @@ namespace CustomBootloaderFlash.Models
         {
             Erase = 0x43
         };
+
+        private enum TargetSectors
+        {
+            SECTOR_0 = 0,
+            SECTOR_1,
+            SECTOR_2,
+            SECTOR_3,
+            SECTOR_4,
+            SECTOR_5,
+            SECTOR_6,
+            SECTOR_7
+        };
         #endregion
 
         #region Private Functions
@@ -229,6 +241,7 @@ namespace CustomBootloaderFlash.Models
             Logger.Log("Flash failed!");
 
             TargetDisconnect();
+            IsFlashInProgress = false;
         }
 
         /// <summary>
@@ -241,32 +254,70 @@ namespace CustomBootloaderFlash.Models
             Logger.Log("Hooking up communication...");
 
             byte[] tx = new byte[2];
-            byte[] tmp = new byte[1];
+            byte[] tmp = new byte[2];
 
             // TODO: Send reset command
-            Logger.Log("  Resetting target...");
 
             // Wait for ACK from target device
-            Logger.Log("  Waiting for ACK from target...");
-            SerialRead(tmp, 0, 1);
+            SerialRead(tmp, 0, 2);
             if(tmp[0] != (byte)TargetResponse.ACK)
             {
-                Logger.Log("  Invalid response from target");
                 _command = Command.Next_Fail;
             }
             else
             {
                 tx[0] = (byte)TargetResponse.ACK;
-                tx[1] = CalculateChecksum(tmp, 1);
+                tx[1] = CalculateChecksum(tx, 1);
                 SerialWrite(tx, 0, 2);
                 _command = Command.Next_Sucess;
             }
         }
 
+        /// <summary>
+        /// Communicates to the target device to perform a FLASH erase operation
+        /// </summary>
         private void Erase()
         {
             _currentState = ProcessState.Erase;
             Logger.Log("Erasing flash...");
+
+            byte[] tx = new byte[3];
+            byte[] tmp = new byte[2];
+
+            // Send the Erase command
+            tx[0] = (byte)TargetCommands.Erase;
+            tx[1] = CalculateChecksum(tx, 1);
+            SerialWrite(tx, 0, 2);
+
+            // Wait for ACK or NACK
+            SerialRead(tmp, 0, 2);
+            if(tmp[0] != (byte)TargetResponse.ACK)
+            {
+                // Invalid ACK received
+                Logger.Log("Error erasing flash!");
+                _command = Command.Next_Fail;
+                return;
+            }
+
+            tx[0] = 6;                              // Erase 6 sectors (Sector 2 - 7)
+            tx[1] = (byte)TargetSectors.SECTOR_2;   // Initial sector to begin erase
+            tx[2] = CalculateChecksum(tx, 2);       // Checksum
+            SerialWrite(tx, 0, 3);
+
+            // Wait for ACK or NACK
+            SerialRead(tmp, 0, 2);
+            if (tmp[0] != (byte)TargetResponse.ACK)
+            {
+                // Invalid ACK received
+                Logger.Log("Error erasing flash!");
+                _command = Command.Next_Fail;
+            }
+            else
+            {
+                Logger.Log("Flash erase success!");
+                _command = Command.Next_Sucess;
+            }
+
         }
 
         private void Write()
@@ -295,7 +346,6 @@ namespace CustomBootloaderFlash.Models
 
             while(br < count)
             {
-               
                 br += bs.Read(buffer, offset + br, count - br);
             }
         }
