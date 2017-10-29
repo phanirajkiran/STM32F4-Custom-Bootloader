@@ -21,6 +21,11 @@ extern "C" {
 #define HAL_FLASH_SECTOR_5          0x5
 #define HAL_FLASH_SECTOR_6          0x6
 #define HAL_FLASH_SECTOR_7          0x7
+    
+#define FLASH_TYPEPROGRAM_BYTE       (0x0 << FLASH_CR_PSIZE_Pos) /*!< 8  bit */
+#define FLASH_TYPEPROGRAM_HALFWORD   (0x1 << FLASH_CR_PSIZE_Pos) /*!< 16 bit */
+#define FLASH_TYPEPROGRAM_WORD       (0x2 << FLASH_CR_PSIZE_Pos) /*!< 32 bit */
+#define FLASH_TYPEPROGRAM_DOUBLEWORD (0x3 << FLASH_CR_PSIZE_Pos) /*!< 64 bit */
 
 #define FLASH_KEYR_1                0x45670123U
 #define FLASH_KEYR_2                0xCDEF89ABU
@@ -49,7 +54,7 @@ void HAL_Flash_Unlock(void);
  */
 void HAL_Flash_Lock(void);
     
-/*! \brief Perform a mass erase or erase the specified FLASh memory sectors.
+/*! \brief Perform a mass erase or erase the specified FLASH memory sectors.
  *  
  *  \param  *pEraseInit     pointer to a erase configuration structure
  *  \param  *SectorError    pointer to variable that contains the config on
@@ -57,7 +62,16 @@ void HAL_Flash_Lock(void);
  *                          0xFFFFFFFFU means that all the sectors have been
  *                          correctly erased
  */
-void HAL_Flash_Erase(Flash_EraseInitTypeDef *pEraseinit, uint32_t *SectorError);
+void HAL_Flash_Erase(Flash_EraseInitTypeDef *pEraseinit, uint32_t *sectorError);
+
+/*! \brief Program byte, halfword, word, or double word at a specified address
+ *  
+ *  \param  typeProgram indicate the way to program at a specified address.
+ *                      Value can be of FLASH Type Program
+ *  \param  address     specifies the address to be programmed
+ *  \param  data        spexifies the data to be programmed
+ */
+void HAL_Flash_Program(uint32_t typeProgram, uint32_t address, uint8_t data);
     
 
 #ifdef __cplusplus

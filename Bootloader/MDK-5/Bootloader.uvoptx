@@ -118,7 +118,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>”ôo</Name>
+          <Name>´ñ¯</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -150,9 +150,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>275</LineNumber>
+          <LineNumber>134</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134219310</Address>
+          <Address>134221522</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -161,62 +161,46 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\src\Bootloader.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Bootloader\../src/Bootloader.c\275</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>58</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134219416</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Drivers\HAL\Source\HAL_Flash_Driver.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\Bootloader\../Drivers/HAL/Source/HAL_Flash_Driver.c\58</Expression>
+          <Expression>\\Bootloader\../src/Bootloader.c\134</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>result</ItemText>
+          <ItemText>data[0]</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pRxBuffer[0]</ItemText>
+          <ItemText>i</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pRxBuffer[1]</ItemText>
+          <ItemText>((CRC_TypeDef *) ((0x40000000U + 0x00020000U) + 0x3000U))</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pRxBuffer[2]</ItemText>
+          <ItemText>crcResult</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>flashEraseConfig</ItemText>
+          <ItemText>pdata[0]</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sectorNumber</ItemText>
+          <ItemText>pdata[1]</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
-          <SubType>1</SubType>
-          <ItemText>0x08060000</ItemText>
+          <SubType>0</SubType>
+          <ItemText>0x40023000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

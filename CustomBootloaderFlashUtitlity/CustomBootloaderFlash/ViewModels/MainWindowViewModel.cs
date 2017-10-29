@@ -234,6 +234,7 @@ namespace CustomBootloaderFlash.ViewModels
             if(fileDialog.ShowDialog() == true)
             {
                 FilePath = fileDialog.FileName;
+                TargetFlashLogic.FileLocation = FilePath;
             }
         }
 

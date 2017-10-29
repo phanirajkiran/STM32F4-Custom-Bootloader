@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using System.ComponentModel;
+using System.IO;
 
 namespace CustomBootloaderFlash.Models
 {
@@ -43,7 +44,7 @@ namespace CustomBootloaderFlash.Models
         /// <summary>
         /// The size of the flash that has been downloaded to target, in kb
         /// </summary>
-        public long FlashedBytes
+        public double FlashedBytes
         {
             get { return _flashedBytes; }
             set { SetProperty(ref _flashedBytes, value); }
@@ -53,6 +54,8 @@ namespace CustomBootloaderFlash.Models
         /// Boolean for if the flash is in progress
         /// </summary>
         public bool IsFlashInProgress { get; set; } = false;
+
+        public string FileLocation { get; set; }
         #endregion
 
         #region Public Functions
@@ -91,6 +94,7 @@ namespace CustomBootloaderFlash.Models
         public void StartFlash(string portName, int baud)
         {
             IsFlashInProgress = true;
+            FlashedBytes = 0;
             TargetConnect(portName, baud);
             while (IsFlashInProgress == true)
             {
@@ -121,8 +125,8 @@ namespace CustomBootloaderFlash.Models
                 { Write, TargetDisconnectFailure},  // Erase State
                 { Check, TargetDisconnectFailure},  // Write State
                 { TargetDisconnectSuccess, TargetDisconnectFailure }, // Check state
-                {null, null}, // Target Disconnect Success State
-                {null, null}, // Target Disconnect Failure State
+                { null, null}, // Target Disconnect Success State
+                { null, null}, // Target Disconnect Failure State
             };
         }
 
@@ -152,7 +156,7 @@ namespace CustomBootloaderFlash.Models
         /// <summary>
         /// The size of the flash that has been downloaded to target, in kb
         /// </summary>
-        private long _flashedBytes;
+        private double _flashedBytes;
 
         /// <summary>
         /// Possible responses from the target
@@ -161,14 +165,17 @@ namespace CustomBootloaderFlash.Models
         {
             ACK = 0x06,
             NACK = 0x16
-        } ;
+        };
 
         /// <summary>
         /// Possible commands for the target
         /// </summary>
         private enum TargetCommands
         {
-            Erase = 0x43
+            Erase = 0x43,
+            Write = 0x31,
+            Check = 0x51,
+            Jump = 0xA1,
         };
 
         private enum TargetSectors
@@ -216,12 +223,15 @@ namespace CustomBootloaderFlash.Models
         /// </summary>
         private void TargetDisconnect()
         {
+            
             if (_serialPort.IsOpen)
             {
                 _serialPort.Close();
                 IsTargetConnected = false;
                 Logger.Log("Disconnected from target.");
             }
+
+            
         }
 
         private void TargetDisconnectSuccess()
@@ -260,7 +270,7 @@ namespace CustomBootloaderFlash.Models
 
             // Wait for ACK from target device
             SerialRead(tmp, 0, 2);
-            if(tmp[0] != (byte)TargetResponse.ACK)
+            if (tmp[0] != (byte)TargetResponse.ACK)
             {
                 _command = Command.Next_Fail;
             }
@@ -281,6 +291,8 @@ namespace CustomBootloaderFlash.Models
             _currentState = ProcessState.Erase;
             Logger.Log("Erasing flash...");
 
+            //return;
+
             byte[] tx = new byte[3];
             byte[] tmp = new byte[2];
 
@@ -291,7 +303,7 @@ namespace CustomBootloaderFlash.Models
 
             // Wait for ACK or NACK
             SerialRead(tmp, 0, 2);
-            if(tmp[0] != (byte)TargetResponse.ACK)
+            if (tmp[0] != (byte)TargetResponse.ACK)
             {
                 // Invalid ACK received
                 Logger.Log("Error erasing flash!");
@@ -320,16 +332,204 @@ namespace CustomBootloaderFlash.Models
 
         }
 
+        // Write to the target device
         private void Write()
         {
             _currentState = ProcessState.Write;
             Logger.Log("Writing to flash...");
+
+            //return;
+
+            // Read bin file
+            byte[] bin = ReadFile();
+            int totalBytes = bin.Length; // the total number of bytes to flash
+            int totalBytesFlashed = 0;     // the total number of bytes flashed to the target
+
+            byte[] tx = new byte[5];
+            byte[] tmp = new byte[2];
+
+            Int32 startAddress = 0x08008000;
+
+            while (totalBytesFlashed < totalBytes)
+            {
+                #region Establishing Write Command
+                // Send the Write command
+                tx[0] = (byte)TargetCommands.Write;
+                tx[1] = CalculateChecksum(tx, 1);
+                SerialWrite(tx, 0, 2);
+
+                // Wait for ACK or NACK
+                SerialRead(tmp, 0, 2);
+                if (tmp[0] != (byte)TargetResponse.ACK)
+                {
+                    // Invalid ACK received
+                    Logger.Log("Error writing to flash!");
+                    _command = Command.Next_Fail;
+                    return;
+                }
+                #endregion
+
+                #region Establishing and sending write address
+                //Send start address and checksum
+                byte[] startAddressByte = BitConverter.GetBytes(startAddress);
+                startAddressByte.CopyTo(tx, 0);
+                tx[4] = CalculateChecksum(tx, 4);
+
+                SerialWrite(tx, 0, 5);
+                #endregion
+
+                #region Sending Number of Bytes to send
+                tx[0] = 4;
+                tx[1] = CalculateChecksum(tx, 1);
+                SerialWrite(tx, 0, 2);
+                #endregion
+
+                #region Establishing and sending data to be sent
+                // Will be sending 4 bytes of data at a time
+                for (int i = 0; i < 4; i++)
+                {
+                    tx[i] = bin[i + totalBytesFlashed];
+                }
+                tx[4] = CalculateChecksum(tx, 4); //Get the checksum
+
+                SerialWrite(tx, 0, 5);
+                #endregion
+
+                #region Determining if write was successful or not
+                // Wait for ACK or NACK
+                SerialRead(tmp, 0, 2);
+                if (tmp[0] != (byte)TargetResponse.ACK)
+                {
+                    // Invalid ACK received
+                    // Write was not successful
+                    Logger.Log("Error writing to flash!");
+                    _command = Command.Next_Fail;
+                    return;
+                }
+                else
+                {
+                    // Successful: update the starting address and the totalbytesflashed
+                    startAddress += 4;
+                    totalBytesFlashed += 4;
+                    FlashedBytes = totalBytesFlashed;
+                }
+                #endregion
+            }
+
+            Logger.Log("Flash write success!");
+            _command = Command.Next_Sucess;
+
         }
 
         private void Check()
         {
+            byte[] tx = new byte[5];
+            byte[] tmp = new byte[2];
+
             _currentState = ProcessState.Check;
             Logger.Log("Checking flash...");
+
+            #region Establishing Check Command
+            // Send the Write command
+            tx[0] = (byte)TargetCommands.Check;
+            tx[1] = CalculateChecksum(tx, 1);
+            SerialWrite(tx, 0, 2);
+
+            // Wait for ACK or NACK
+            SerialRead(tmp, 0, 2);
+            if (tmp[0] != (byte)TargetResponse.ACK)
+            {
+                // Invalid ACK received
+                Logger.Log("Error checking flash!");
+                _command = Command.Next_Fail;
+                return;
+            }
+            #endregion
+
+            #region Establishing and sending start address
+            Int32 startAddress = 0x08008000;
+            //Send start address and checksum
+            byte[] startAddressByte = BitConverter.GetBytes(startAddress);
+            startAddressByte.CopyTo(tx, 0);
+            tx[4] = CalculateChecksum(tx, 4);
+
+            SerialWrite(tx, 0, 5);
+
+            // Wait for ACK or NACK
+            SerialRead(tmp, 0, 2);
+            if (tmp[0] != (byte)TargetResponse.ACK)
+            {
+                // Invalid ACK received
+                Logger.Log("Error checking flash!");
+                _command = Command.Next_Fail;
+                return;
+            }
+            #endregion
+
+            #region Establishing and ending start address
+            byte[] bin = ReadFile();
+            Int32 endAddress = startAddress + bin.Length;
+            //Send start address and checksum
+            byte[] endAddressByte = BitConverter.GetBytes(endAddress);
+            endAddressByte.CopyTo(tx, 0);
+            tx[4] = CalculateChecksum(tx, 4);
+
+            SerialWrite(tx, 0, 5);
+
+            // Wait for ACK or NACK
+            SerialRead(tmp, 0, 2);
+            if (tmp[0] != (byte)TargetResponse.ACK)
+            {
+                // Invalid ACK received
+                Logger.Log("Error checking flash!");
+                _command = Command.Next_Fail;
+                return;
+            }
+            #endregion
+
+            #region Waiting for CRC Check Result
+            // Wait for ACK or NACK
+            SerialRead(tmp, 0, 2);
+            if (tmp[0] != (byte)TargetResponse.ACK)
+            {
+                // Invalid ACK received
+                Logger.Log("Error checking flash!");
+                _command = Command.Next_Fail;
+            }
+            else
+            {
+                Logger.Log("Flash check successful!");
+                _command = Command.Next_Sucess;
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// Tells target to jump to main application
+        /// </summary>
+        private void Jump()
+        {
+            byte[] tx = new byte[2];
+            // Send the Erase command
+            tx[0] = (byte)TargetCommands.Jump;
+            tx[1] = CalculateChecksum(tx, 1);
+            SerialWrite(tx, 0, 2);
+        }
+
+        // Reads the firmware file and returns it
+        private byte[] ReadFile()
+        {
+            byte[] bin;
+            using (var s = new FileStream(FileLocation, FileMode.Open, FileAccess.Read))
+            {
+                /* allocate memory */
+                bin = new byte[s.Length];
+
+                /* read file contents */
+                s.Read(bin, 0, bin.Length);
+            }
+
+            return bin;
         }
 
         /// <summary>
@@ -344,7 +544,7 @@ namespace CustomBootloaderFlash.Models
             var bs = _serialPort.BaseStream;
             int br = 0;
 
-            while(br < count)
+            while (br < count)
             {
                 br += bs.Read(buffer, offset + br, count - br);
             }
@@ -372,7 +572,7 @@ namespace CustomBootloaderFlash.Models
         private byte CalculateChecksum(byte[] data, int count)
         {
             byte checksum = 0xFF;
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 checksum ^= data[i];
             }

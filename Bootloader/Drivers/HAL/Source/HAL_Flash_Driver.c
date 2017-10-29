@@ -65,6 +65,26 @@ void HAL_Flash_Erase(Flash_EraseInitTypeDef *pEraseInit, uint32_t *SectorError)
         // Wait until the operation is completed
         while(FLASH->SR & FLASH_SR_BSY);    
     }
-
     
+    // Clear erase bits
+    FLASH->CR &= ~(FLASH_CR_MER | FLASH_CR_SER);
+}
+
+/*! \brief Program byte, halfword, word, or double word at a specified address
+ *          
+ *  \param  typeProgram indicate the way to program at a specified address.
+ *                      Value can be of FLASH Type Program
+ *                      At the moment, only supports BYTE type programming
+ *  \param  address     specifies the address to be programmed
+ *  \param  data        spexifies the data to be programmed
+ */
+void HAL_Flash_Program(uint32_t typeProgram, uint32_t address, uint8_t data)
+{
+    while(FLASH->SR & FLASH_SR_BSY);    // Make sure flash is not busy
+    
+    FLASH->CR |= FLASH_CR_PG;           // Set Flashing Programming bit
+    FLASH->CR |= FLASH_TYPEPROGRAM_BYTE;// Configure the PSIZE parallelism
+    *(__IO uint8_t*) address = data;
+    while(FLASH->SR & FLASH_SR_BSY);    // Wait until flash operation is complete
+    FLASH->CR &= ~FLASH_CR_PG;          // Disable flash programming
 }

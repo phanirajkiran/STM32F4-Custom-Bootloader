@@ -93,7 +93,7 @@
         <Grid>
             <ProgressBar Minimum="0"
                          Maximum="{Binding TargetFlashLogic.FlashSize}"
-                         Value="{Binding ProgressBar_Current}"
+                         Value="{Binding TargetFlashLogic.FlashedBytes}"
                          Height="25"
                          Margin="2"
                          x:Name="ProgressBar" />
