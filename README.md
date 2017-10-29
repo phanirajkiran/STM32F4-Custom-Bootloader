@@ -11,4 +11,4 @@ Folder Reg_Blinky is a blinky program to work with the bootloader. Use the Reg_B
 
 Image of the program:
 
-![](Bootloader_Flash_Util.png = 300x410)
+![](Bootloader_Flash_Util.png)
