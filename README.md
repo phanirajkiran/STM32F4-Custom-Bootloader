@@ -7,5 +7,8 @@ The bootloader resides in Sector 0 of the main memory block in flash (0x0800 000
 
 A flash utility made in C# WPF is used to download the raw binary file of the main application from the host to the target.
 
-Folder Reg_Blinky is a blinky program to work with the bootloader. Use the Reg_Blinky.bin to flash the program via the flash utility program. Image of the program:
-![alt text](Bootloader_Flash_Util.png)
+Folder Reg_Blinky is a blinky program to work with the bootloader. Use the Reg_Blinky.bin to flash the program via the flash utility program. 
+
+Image of the program:
+
+![alt text](Bootloader_Flash_Util.png =300x410 )
