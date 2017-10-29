@@ -1,0 +1,24 @@
+--cpu=Cortex-M4.fp
+"reg_blinky\main.o"
+"reg_blinky\stm32f4xx_hal_msp.o"
+"reg_blinky\stm32f4xx_it.o"
+"reg_blinky\stm32f4xx_hal_cortex.o"
+"reg_blinky\stm32f4xx_hal_dma_ex.o"
+"reg_blinky\stm32f4xx_hal_flash_ex.o"
+"reg_blinky\stm32f4xx_hal_dma.o"
+"reg_blinky\stm32f4xx_hal_gpio.o"
+"reg_blinky\stm32f4xx_hal_flash_ramfunc.o"
+"reg_blinky\stm32f4xx_hal.o"
+"reg_blinky\stm32f4xx_hal_flash.o"
+"reg_blinky\stm32f4xx_hal_tim.o"
+"reg_blinky\stm32f4xx_hal_tim_ex.o"
+"reg_blinky\stm32f4xx_hal_rcc_ex.o"
+"reg_blinky\stm32f4xx_hal_pwr.o"
+"reg_blinky\stm32f4xx_hal_pwr_ex.o"
+"reg_blinky\stm32f4xx_hal_rcc.o"
+"reg_blinky\system_stm32f4xx.o"
+"reg_blinky\startup_stm32f411xe.o"
+--library_type=microlib --strict --scatter "Reg_Blinky\Reg_Blinky.sct"
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "Reg_Blinky.map" -o Reg_Blinky\Reg_Blinky.axf
